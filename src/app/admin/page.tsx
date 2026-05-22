@@ -12,8 +12,10 @@ import {
   Activity, 
   HardDrive, 
   AlertCircle,
-  Briefcase
+  Briefcase,
+  Newspaper
 } from "lucide-react";
+import { supabase, News } from "@/lib/supabase";
 
 interface Lead {
   id: string;
@@ -36,6 +38,15 @@ export default function AdminDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [newBlog, setNewBlog] = useState({ title: "", author: "", category: "AI & ML" });
+  const [news, setNews] = useState<News[]>([]);
+  const [newNews, setNewNews] = useState({
+    title: "",
+    description: "",
+    category: "AI & ML" as const,
+    author: "",
+    readTime: "5 min read",
+  });
+  const [loading, setLoading] = useState(false);
   
   // Stats definitions
   const [systemStats, setSystemStats] = useState({
@@ -45,7 +56,7 @@ export default function AdminDashboard() {
     uptime: "99.98%"
   });
 
-  // Hydrate lists with mock data on load
+  // Hydrate lists with mock data on load and fetch news
   useEffect(() => {
     // Populate leads
     const cachedLeads = localStorage.getItem("ats_leads");
@@ -87,6 +98,9 @@ export default function AdminDashboard() {
       setBlogs(initialBlogs);
     }
 
+    // Fetch news from Supabase
+    fetchNews();
+
     // Simulate system fluctuations
     const statsTimer = setInterval(() => {
       setSystemStats((prev) => ({
@@ -98,6 +112,70 @@ export default function AdminDashboard() {
 
     return () => clearInterval(statsTimer);
   }, []);
+
+  const fetchNews = async () => {
+    try {
+      const { data } = await supabase.from("news").select("*").order("createdAt", { ascending: false });
+      setNews(data || []);
+    } catch (error) {
+      console.error("Error fetching news:", error);
+    }
+  };
+
+  const addNews = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newNews.title || !newNews.author) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/news", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": "admin123",
+        },
+        body: JSON.stringify({
+          ...newNews,
+          date: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          }),
+          source: "manual",
+        }),
+      });
+
+      if (response.ok) {
+        setNewNews({
+          title: "",
+          description: "",
+          category: "AI & ML",
+          author: "",
+          readTime: "5 min read",
+        });
+        fetchNews();
+      }
+    } catch (error) {
+      console.error("Error adding news:", error);
+    }
+    setLoading(false);
+  };
+
+  const deleteNews = async (id: string) => {
+    if (!confirm("Delete this news?")) return;
+
+    setLoading(true);
+    try {
+      await fetch(`/api/news?id=${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": "admin123" },
+      });
+      fetchNews();
+    } catch (error) {
+      console.error("Error deleting news:", error);
+    }
+    setLoading(false);
+  };
 
   const addBlogPost = (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,6 +228,7 @@ export default function AdminDashboard() {
               { id: "overview", label: "System Monitor", icon: Server },
               { id: "leads", label: "Client Leads", icon: MessageSquare, badge: leads.length },
               { id: "blogs", label: "Blog Publisher", icon: FileText, badge: blogs.length },
+              { id: "news", label: "News Manager", icon: Newspaper, badge: news.length },
             ].map((tab) => {
               const Icon = tab.icon;
               return (
@@ -379,6 +458,110 @@ export default function AdminDashboard() {
                       </button>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* News Manager */}
+            {activeTab === "news" && (
+              <div className="flex flex-col gap-8">
+                {/* Add new news form */}
+                <form onSubmit={addNews} className="glass-card p-6 rounded-2xl flex flex-col gap-4 text-left">
+                  <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500">Add News Item</h4>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold text-slate-600 uppercase">Title</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="News headline"
+                        className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-brand-violet text-slate-800"
+                        value={newNews.title}
+                        onChange={(e) => setNewNews({ ...newNews, title: e.target.value })}
+                      />
+                    </div>
+                    
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold text-slate-600 uppercase">Author</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Author name"
+                        className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-brand-violet text-slate-800"
+                        value={newNews.author}
+                        onChange={(e) => setNewNews({ ...newNews, author: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold text-slate-600 uppercase">Description</label>
+                    <textarea
+                      required
+                      rows={3}
+                      placeholder="News description"
+                      className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-brand-violet text-slate-800"
+                      value={newNews.description}
+                      onChange={(e) => setNewNews({ ...newNews, description: e.target.value })}
+                    />
+                  </div>
+
+                  <select
+                    className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-brand-violet text-slate-800"
+                    value={newNews.category}
+                    onChange={(e) => setNewNews({ ...newNews, category: e.target.value as any })}
+                  >
+                    <option>AI & ML</option>
+                    <option>Cloud Ops</option>
+                    <option>Security</option>
+                    <option>Web Engineering</option>
+                  </select>
+
+                  <div className="flex gap-4">
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full py-2 bg-slate-900 hover:bg-brand-violet text-white text-xs font-bold uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 transition-all shadow-md disabled:opacity-50"
+                    >
+                      <Plus className="w-3.5 h-3.5" /> Add News
+                    </button>
+                  </div>
+                </form>
+
+                {/* News list */}
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500">Active News ({news.length})</h4>
+                  {news.length === 0 ? (
+                    <p className="text-slate-500 text-center py-8 text-xs">No news added yet</p>
+                  ) : (
+                    <div className="flex flex-col gap-4 max-h-[500px] overflow-y-auto">
+                      {news.map((item) => (
+                        <div key={item.id} className="glass-card p-4 rounded-xl border-l-4 border-brand-violet">
+                          <div className="flex justify-between items-start gap-4">
+                            <div className="flex-1">
+                              <div className="flex gap-2 items-center mb-1">
+                                <span className="text-[9px] font-bold text-brand-violet uppercase">{item.category}</span>
+                                <span className="text-[9px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">{item.source}</span>
+                              </div>
+                              <h4 className="text-xs font-bold text-slate-800 mb-1">{item.title}</h4>
+                              <p className="text-[11px] text-slate-500 line-clamp-2 mb-2">{item.description}</p>
+                              <p className="text-[10px] text-slate-400">
+                                {item.author} • {item.date}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => item.id && deleteNews(item.id)}
+                              disabled={loading}
+                              className="text-slate-400 hover:text-rose-500 transition-colors disabled:opacity-50"
+                            >
+                              <Trash className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

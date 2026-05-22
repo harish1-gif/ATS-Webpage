@@ -15,34 +15,8 @@ import Link from "next/link";
 
 const services = [
   {
-    id: "ai",
-    title: "Cognitive AI Engineering",
-    tagline: "LLMs, Custom Agents, & ML Pipelines",
-    description: "We deploy custom generative AI solutions, training pipelines, retrieval-augmented generation (RAG) datasets, and low-latency API models optimized for secure workloads.",
-    icon: Cpu,
-    capabilities: [
-      "Custom Large Language Model (LLM) fine-tuning",
-      "Retrieval-Augmented Generation (RAG) vector embeddings",
-      "Cognitive process automation & agentic workflows",
-      "Edge device neural network deployment"
-    ],
-  },
-  {
-    id: "cloud",
-    title: "Cloud Fabric Modernization",
-    tagline: "Kubernetes, Serverless, & Multi-Region DBs",
-    description: "Scale on robust multi-region infrastructure. We build containerized architectures with auto-scaling capabilities, zero-downtime rolling deploys, and cold-recovery architectures.",
-    icon: Layers,
-    capabilities: [
-      "Multi-tenant Kubernetes (EKS, GKE, AKS) clusters",
-      "Serverless functions & edge-compute networks",
-      "High-availability PostgreSQL & Supabase migrations",
-      "Infrastructure-as-Code (Terraform, Pulumi)"
-    ],
-  },
-  {
-    id: "web",
     title: "Next-Gen Web Platforms",
+    id: "web",
     tagline: "React, Next.js, & Hyper-Fast APIs",
     description: "We develop ultra-fast, premium corporate applications using Next.js and Vite. Combined with Golang or Node microservices, we ensure 100% responsiveness and premium SEO indexing.",
     icon: Globe,
@@ -64,6 +38,32 @@ const services = [
       "Automated vulnerability and compliance scanning",
       "End-to-end data packet encryption",
       "SOC2 / GDPR compliance engineering"
+    ],
+  },
+  {
+    id: "cloud",
+    title: "Cloud Fabric Modernization",
+    tagline: "Kubernetes, Serverless, & Multi-Region DBs",
+    description: "Scale on robust multi-region infrastructure. We build containerized architectures with auto-scaling capabilities, zero-downtime rolling deploys, and cold-recovery architectures.",
+    icon: Layers,
+    capabilities: [
+      "Multi-tenant Kubernetes (EKS, GKE, AKS) clusters",
+      "Serverless functions & edge-compute networks",
+      "High-availability PostgreSQL & Supabase migrations",
+      "Infrastructure-as-Code (Terraform, Pulumi)"
+    ],
+  },
+  {
+    id: "ai",
+    title: "Cognitive AI Engineering",
+    tagline: "LLMs, Custom Agents, & ML Pipelines",
+    description: "We deploy custom generative AI solutions, training pipelines, retrieval-augmented generation (RAG) datasets, and low-latency API models optimized for secure workloads.",
+    icon: Cpu,
+    capabilities: [
+      "Custom Large Language Model (LLM) fine-tuning",
+      "Retrieval-Augmented Generation (RAG) vector embeddings",
+      "Cognitive process automation & agentic workflows",
+      "Edge device neural network deployment"
     ],
   },
 ];

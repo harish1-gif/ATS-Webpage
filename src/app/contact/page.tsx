@@ -13,17 +13,31 @@ export default function Contact() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    // Simulate database write
+    
+    try {
+      // Send notification to WhatsApp and Gmail
+      await fetch("/api/notify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+
+    // Reset form after 2.5 seconds
     setTimeout(() => {
       setSubmitted(false);
       setFormData({
         name: "",
         email: "",
         company: "",
-        service: "AI Automation",
+        service: "Website Development",
         message: "",
       });
     }, 2500);
@@ -181,10 +195,11 @@ export default function Contact() {
                       value={formData.service}
                       onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                     >
-                      <option>AI Automation</option>
-                      <option>Cloud Infrastructure</option>
-                      <option>Next-Gen Web Platforms</option>
-                      <option>Cybersecurity / Compliance</option>
+                      <option>Website Development</option>
+                      <option>Cyber Security and IAM Compliance</option>
+                      <option>Cloud Service</option>
+                      <option>AI and ML Engineer</option>
+                      <option>Custom Software and Applications for Business</option>
                     </select>
                   </div>
                 </div>
