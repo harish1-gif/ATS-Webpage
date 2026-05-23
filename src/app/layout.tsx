@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     "Web Development Pondicherry"
   ],
   authors: [{ name: "AGZUS Technology Solutions" }],
+
 };
 
 export default function RootLayout({
@@ -47,6 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-black select-none">

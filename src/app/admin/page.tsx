@@ -16,6 +16,7 @@ import {
   Newspaper
 } from "lucide-react";
 import { supabase, News } from "@/lib/supabase";
+import PageTransition from "@/components/PageTransition";
 
 interface Lead {
   id: string;
@@ -203,6 +204,7 @@ export default function AdminDashboard() {
   };
 
   return (
+    <PageTransition variant="admin">
     <div className="relative overflow-hidden w-full min-h-screen pb-20">
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.03] -z-10" />
       
@@ -569,5 +571,6 @@ export default function AdminDashboard() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send, HelpCircle, CheckCircle2 } from "lucide-react";
+import PageTransition from "@/components/PageTransition";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -44,6 +45,7 @@ export default function Contact() {
   };
 
   return (
+    <PageTransition variant="contact">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -229,5 +231,6 @@ export default function Contact() {
         </div>
       </section>
     </div>
+    </PageTransition>
   );
 }

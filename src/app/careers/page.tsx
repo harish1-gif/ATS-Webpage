@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { Briefcase, MapPin, DollarSign, Send, FileText, CheckCircle2, X } from "lucide-react";
+import PageTransition from "@/components/PageTransition";
 
 const openPositions = [
   {
@@ -77,6 +78,7 @@ export default function Careers() {
   };
 
   return (
+    <PageTransition variant="careers">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -175,13 +177,14 @@ export default function Careers() {
       {/* Upcoming Opportunities Modal */}
       <AnimatePresence>
         {showUpcoming && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-start justify-center pt-28 px-4" onClick={() => setShowUpcoming(false)}>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className="glass-card bg-white p-8 rounded-3xl max-w-lg w-full relative shadow-2xl flex flex-col gap-6"
               ref={modalCardRef}
+              onClick={(e) => e.stopPropagation()}
             >
 
               <div className="flex flex-col gap-1">
@@ -205,6 +208,8 @@ export default function Careers() {
                   <span>In the meantime, we welcome unsolicited applications and referrals from talented engineers in your network.</span>
                 </p>
               </div>
+
+
             </motion.div>
           </div>
         )}
@@ -309,5 +314,6 @@ export default function Careers() {
         )}
       </AnimatePresence>
     </div>
+    </PageTransition>
   );
 }

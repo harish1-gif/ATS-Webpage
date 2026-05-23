@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Cpu, Layers, Globe, Filter } from "lucide-react";
+import PageTransition from "@/components/PageTransition";
 
 const categories = ["All", "AI Solutions", "Cloud Infrastructures", "Web Applications"];
 
@@ -65,6 +66,7 @@ export default function Portfolio() {
   );
 
   return (
+    <PageTransition variant="portfolio">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -164,5 +166,6 @@ export default function Portfolio() {
         </motion.div>
       </section>
     </div>
+    </PageTransition>
   );
 }

@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       try {
         await transporter.sendMail({
           from: process.env.GMAIL_USER,
-          to: NOTIFICATION_CONFIG.email.recipient,
+          to: NOTIFICATION_CONFIG.email.recipients.join(", "),
           subject: `🔔 New Contact Form Submission - ${company}`,
           html: emailContent,
           replyTo: email,

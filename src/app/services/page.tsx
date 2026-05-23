@@ -12,6 +12,7 @@ import {
   Sparkles
 } from "lucide-react";
 import Link from "next/link";
+import PageTransition from "@/components/PageTransition";
 
 const services = [
   {
@@ -66,10 +67,24 @@ const services = [
       "Edge device neural network deployment"
     ],
   },
+  {
+    id: "custom-app",
+    title: "Custom App Development",
+    tagline: "Business Solutions & Enterprise Applications",
+    description: "We build tailored applications specifically designed for your business needs. From mobile to desktop, web to cross-platform solutions, we deliver scalable, secure, and user-friendly applications that drive operational efficiency.",
+    icon: Terminal,
+    capabilities: [
+      "Full-stack web application development",
+      "Native mobile app development (iOS & Android)",
+      "Cross-platform desktop applications",
+      "Enterprise software integration & migration"
+    ],
+  },
 ];
 
 export default function Services() {
   return (
+    <PageTransition variant="services">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -201,5 +216,6 @@ export default function Services() {
         </div>
       </section>
     </div>
+    </PageTransition>
   );
 }

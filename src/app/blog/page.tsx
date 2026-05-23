@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Search, Calendar, User, ArrowRight, Cpu, Layers, Globe, X } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import PageTransition from "@/components/PageTransition";
 
 const blogPosts = [
   {
@@ -63,6 +64,7 @@ export default function Blog() {
   });
 
   return (
+    <PageTransition variant="blog">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -311,5 +313,6 @@ export default function Blog() {
         )}
       </AnimatePresence>
     </div>
+    </PageTransition>
   );
 }

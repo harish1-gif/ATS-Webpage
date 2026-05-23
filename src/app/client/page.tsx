@@ -11,8 +11,11 @@ import {
   Circle, 
   Send, 
   Sparkles,
-  LifeBuoy
+  LifeBuoy,
+  Loader
 } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
+import PageTransition from "@/components/PageTransition";
 
 interface Ticket {
   id: string;
@@ -23,9 +26,25 @@ interface Ticket {
   date: string;
 }
 
+interface Asset {
+  id: string;
+  file_name: string;
+  file_size: string;
+  created_at: string;
+  file_url: string;
+}
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+);
+
 export default function ClientDashboard() {
   const [activeTab, setActiveTab] = useState("milestones");
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [assetsLoading, setAssetsLoading] = useState(true);
   const [newTicket, setNewTicket] = useState({ topic: "", priority: "Medium", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
@@ -37,12 +56,41 @@ export default function ClientDashboard() {
     { name: "Kubernetes Scaling & Security Audit", status: "pending", date: "Target: Jun 10, 2026" },
   ];
 
-  // Shared assets catalog
-  const assets = [
-    { name: "ATS_Architecture_Spec.pdf", size: "4.8 MB", date: "May 04, 2026" },
-    { name: "Supabase_Schema_v2.sql", size: "1.2 MB", date: "May 12, 2026" },
-    { name: "Project_SLA_Agreement.pdf", size: "8.4 MB", date: "May 02, 2026" },
-  ];
+  // Fetch assets from database
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        setAssetsLoading(true);
+        const { data, error } = await supabase
+          .from("shared_assets")
+          .select("id, file_name, file_size, created_at, file_url")
+          .eq("is_public", true)
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        setAssets(
+          data?.map((asset: any) => ({
+            id: asset.id,
+            file_name: asset.file_name,
+            file_size: asset.file_size || "Unknown",
+            created_at: new Date(asset.created_at).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+            file_url: asset.file_url,
+          })) || []
+        );
+      } catch (error) {
+        console.error("Error fetching assets:", error);
+      } finally {
+        setAssetsLoading(false);
+      }
+    };
+
+    fetchAssets();
+  }, []);
 
   useEffect(() => {
     const cachedTickets = localStorage.getItem("ats_tickets");
@@ -82,6 +130,7 @@ export default function ClientDashboard() {
   };
 
   return (
+    <PageTransition variant="client">
     <div className="relative overflow-hidden w-full min-h-screen pb-20">
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.03] -z-10" />
 
@@ -295,24 +344,40 @@ export default function ClientDashboard() {
               <div className="flex flex-col gap-6">
                 <h3 className="text-lg font-bold text-slate-800 tracking-tight">Project Blueprints & Specs</h3>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {assets.map((asset) => (
-                    <div key={asset.name} className="glass-card p-6 rounded-2xl flex items-center justify-between gap-4">
-                      <div className="flex flex-col text-left">
-                        <span className="text-xs font-bold text-slate-800 leading-tight truncate max-w-[200px]">
-                          {asset.name}
-                        </span>
-                        <span className="text-[9px] text-slate-400 font-semibold mt-1">
-                          {asset.size} • Uploaded {asset.date}
-                        </span>
+                {assetsLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader className="w-6 h-6 text-brand-violet animate-spin" />
+                    <span className="ml-3 text-sm text-slate-500 font-medium">Loading assets...</span>
+                  </div>
+                ) : assets.length === 0 ? (
+                  <div className="glass-card p-12 rounded-2xl text-center">
+                    <FileDown className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                    <p className="text-sm text-slate-500 font-medium">No shared assets available yet</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {assets.map((asset) => (
+                      <div key={asset.id} className="glass-card p-6 rounded-2xl flex items-center justify-between gap-4">
+                        <div className="flex flex-col text-left">
+                          <span className="text-xs font-bold text-slate-800 leading-tight truncate max-w-[200px]">
+                            {asset.file_name}
+                          </span>
+                          <span className="text-[9px] text-slate-400 font-semibold mt-1">
+                            {asset.file_size} • Uploaded {asset.created_at}
+                          </span>
+                        </div>
+                        
+                        <a
+                          href={asset.file_url}
+                          download
+                          className="p-2.5 bg-slate-50 border border-slate-100 hover:bg-brand-violet hover:text-white rounded-xl text-slate-500 transition-colors cursor-pointer"
+                        >
+                          <FileDown className="w-4 h-4" />
+                        </a>
                       </div>
-                      
-                      <button className="p-2.5 bg-slate-50 border border-slate-100 hover:bg-brand-violet hover:text-white rounded-xl text-slate-500 transition-colors">
-                        <FileDown className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -320,5 +385,6 @@ export default function ClientDashboard() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }

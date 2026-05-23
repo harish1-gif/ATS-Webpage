@@ -11,6 +11,7 @@ import {
   HardDrive,
   Compass
 } from "lucide-react";
+import PageTransition from "@/components/PageTransition";
 
 const techCategories = [
   {
@@ -57,6 +58,7 @@ const techCategories = [
 
 export default function Technologies() {
   return (
+    <PageTransition variant="technologies">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -124,5 +126,6 @@ export default function Technologies() {
         })}
       </section>
     </div>
+    </PageTransition>
   );
 }
