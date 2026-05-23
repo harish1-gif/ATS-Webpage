@@ -20,7 +20,7 @@ export default function LoadingScreen() {
         const increment = prev > 70 ? Math.random() * 8 + 2 : Math.random() * 4 + 1;
         return Math.min(Math.round(prev + increment), 100);
       });
-    }, 40);
+    }, 100);
 
     return () => clearInterval(timer);
   }, []);

@@ -49,7 +49,7 @@ function FloatingShape({
 // Particle field connecting nodes
 function ParticleNetwork() {
   const pointsRef = useRef<THREE.Points>(null);
-  const particleCount = 120;
+  const particleCount = 60;
   
   const [positions] = useState(() => {
     const arr = new Float32Array(particleCount * 3);

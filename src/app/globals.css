@@ -18,15 +18,11 @@
   @keyframes pulse-glow {
     0%, 100% {
       opacity: 0.3;
-      transform: scale(1) translate(0px, 0px);
+      transform: scale(1);
     }
-    33% {
-      opacity: 0.45;
-      transform: scale(1.05) translate(5px, -10px);
-    }
-    66% {
-      opacity: 0.25;
-      transform: scale(0.95) translate(-5px, 5px);
+    50% {
+      opacity: 0.4;
+      transform: scale(1.02);
     }
   }
 
@@ -104,10 +100,12 @@ body {
 /* Glowing Radial Accents - Neutral */
 .ambient-glow-violet {
   background: radial-gradient(circle, rgba(0, 0, 0, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+  will-change: transform, opacity;
 }
 
 .ambient-glow-blue {
   background: radial-gradient(circle, rgba(0, 0, 0, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+  will-change: transform, opacity;
 }
 
 /* Glassmorphism Styles */
@@ -150,3 +148,9 @@ body {
 .custom-cursor-active [role="button"] {
   cursor: none;
 }
+
+.custom-cursor-active * {
+  cursor: none !important;
+}
+
+.logo-invert { filter: brightness(0); }

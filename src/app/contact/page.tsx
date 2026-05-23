@@ -145,6 +145,7 @@ export default function Contact() {
                       placeholder="e.g. Ramesh Dev"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      suppressHydrationWarning
                     />
                   </div>
                   
@@ -157,6 +158,7 @@ export default function Contact() {
                       placeholder="e.g. Nexus Tech"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      suppressHydrationWarning
                     />
                   </div>
                 </div>
@@ -171,6 +173,7 @@ export default function Contact() {
                       placeholder="ramesh@nexustech.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      suppressHydrationWarning
                     />
                   </div>
 
@@ -180,6 +183,7 @@ export default function Contact() {
                       className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-violet text-slate-800"
                       value={formData.service}
                       onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                      suppressHydrationWarning
                     >
                       <option>AI Automation</option>
                       <option>Cloud Infrastructure</option>
@@ -197,13 +201,13 @@ export default function Contact() {
                     required
                     placeholder="Provide details about your tech workloads, user counts, or project milestones."
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  />
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}                      suppressHydrationWarning                  />
                 </div>
 
                 <button
                   type="submit"
                   className="w-full py-3.5 mt-2 bg-slate-900 hover:bg-brand-violet text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md"
+                  suppressHydrationWarning
                 >
                   Send Spec Proposal
                   <Send className="w-3.5 h-3.5" />

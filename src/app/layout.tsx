@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import FloatingSidebar from "@/components/FloatingSidebar";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -57,6 +58,9 @@ export default function RootLayout({
 
         {/* Global floating Navbar */}
         <Navbar />
+
+        {/* Floating Sidebar Navigation (appears on scroll) */}
+        <FloatingSidebar />
 
         {/* Core page routing view */}
         <main className="flex-grow pt-24 relative z-10">{children}</main>

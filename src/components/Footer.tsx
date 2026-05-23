@@ -141,10 +141,12 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 text-sm bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-black transition-colors"
                 required
+                suppressHydrationWarning
               />
               <button
                 type="submit"
                 className="px-3.5 py-2 bg-black text-white rounded-xl hover:bg-zinc-800 transition-colors flex items-center justify-center shrink-0"
+                suppressHydrationWarning
               >
                 {subscribed ? "Done" : <Send className="w-4 h-4" />}
               </button>
