@@ -55,16 +55,18 @@ export function AGZUSHeroLogo() {
       });
 
       // Subtle parallax float after lock
-      gsap.to(".agzus-hero-wrap", {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-        y: -80,
-        ease: "none",
-      });
+      if (containerRef.current) {
+        gsap.to(containerRef.current, {
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+          y: -80,
+          ease: "none",
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();

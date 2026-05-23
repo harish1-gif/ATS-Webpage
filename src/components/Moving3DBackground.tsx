@@ -19,10 +19,12 @@ function FloatingShape({
   rotationSpeed?: number;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
+  const timeRef = useRef(0);
   
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (!meshRef.current) return;
-    const time = state.clock.getElapsedTime();
+    timeRef.current += delta;
+    const time = timeRef.current;
     
     // Slow float movement
     meshRef.current.position.y = position[1] + Math.sin(time * 0.2 * speed) * 0.4;
@@ -37,10 +39,10 @@ function FloatingShape({
     <mesh ref={meshRef} position={position} scale={scale}>
       <primitive object={geometry} attach="geometry" />
       <meshBasicMaterial 
-        color="#a1a1aa" 
+        color="#94a3b8" 
         wireframe 
         transparent 
-        opacity={0.18} 
+        opacity={0.22} 
       />
     </mesh>
   );
@@ -49,6 +51,7 @@ function FloatingShape({
 // Particle field connecting nodes
 function ParticleNetwork() {
   const pointsRef = useRef<THREE.Points>(null);
+  const timeRef = useRef(0);
   const particleCount = 120;
   
   const [positions] = useState(() => {
@@ -61,11 +64,11 @@ function ParticleNetwork() {
     return arr;
   });
 
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (!pointsRef.current) return;
-    const time = state.clock.getElapsedTime();
-    pointsRef.current.rotation.y = time * 0.015;
-    pointsRef.current.rotation.x = time * 0.008;
+    timeRef.current += delta;
+    pointsRef.current.rotation.y = timeRef.current * 0.015;
+    pointsRef.current.rotation.x = timeRef.current * 0.008;
   });
 
   return (
@@ -77,10 +80,10 @@ function ParticleNetwork() {
         />
       </bufferGeometry>
       <pointsMaterial
-        color="#000000"
-        size={0.04}
+        color="#94a3b8"
+        size={0.05}
         transparent
-        opacity={0.2}
+        opacity={0.28}
         sizeAttenuation
       />
     </points>
