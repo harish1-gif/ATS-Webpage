@@ -11,15 +11,16 @@ import {
   HardDrive,
   Compass
 } from "lucide-react";
+import PageTransition from "@/components/PageTransition";
 
 const techCategories = [
   {
     title: "Programming Languages",
     icon: Code,
     items: [
+      { name: "Python", role: "Machine learning workflows, PyTorch scripts, and data intelligence." },
       { name: "TypeScript", role: "Frontend UI logic and serverless Next.js API endpoints." },
       { name: "Go / Golang", role: "High-performance microservices and heavy data pipeline ingest." },
-      { name: "Python", role: "Machine learning workflows, PyTorch scripts, and data intelligence." },
       { name: "Rust", role: "Low-level system controls, fast compilers, and web-assembly modules." },
     ]
   },
@@ -37,10 +38,10 @@ const techCategories = [
     title: "Infrastructures & Devops",
     icon: Layers,
     items: [
-      { name: "Kubernetes (K8s)", role: "Container scheduling, service mesh management, and auto-scaling." },
       { name: "AWS Cloud Fabric", role: "Highly-resilient multi-region virtual cloud deployment." },
-      { name: "Terraform", role: "Declarative Infrastructure-as-Code for tracking network layouts." },
       { name: "Docker", role: "Lightweight isolated container packaging for consistent pipelines." },
+      { name: "Kubernetes (K8s)", role: "Container scheduling, service mesh management, and auto-scaling." },
+      { name: "Terraform", role: "Declarative Infrastructure-as-Code for tracking network layouts." },
     ]
   },
   {
@@ -48,15 +49,16 @@ const techCategories = [
     icon: Cpu,
     items: [
       { name: "PyTorch", role: "Deep learning framework used to fine-tune custom vision/language models." },
-      { name: "Hugging Face Hub", role: "Pre-trained weights sourcing for quick model prototypes." },
       { name: "LangChain", role: "Framework for chaining multi-agent logic prompts and tool setups." },
       { name: "OpenAI / Anthropic APIs", role: "Cognitive API foundation for baseline model prompts." },
+      { name: "Hugging Face Hub", role: "Pre-trained weights sourcing for quick model prototypes." },
     ]
   }
 ];
 
 export default function Technologies() {
   return (
+    <PageTransition variant="technologies">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -124,5 +126,6 @@ export default function Technologies() {
         })}
       </section>
     </div>
+    </PageTransition>
   );
 }

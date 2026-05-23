@@ -7,6 +7,10 @@ import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import LoadingScreen from "@/components/LoadingScreen";
 import Moving3DBackground from "@/components/Moving3DBackground";
+import OptimizedPageTransition from "@/components/OptimizedPageTransition";
+import { GlobalLoadingScreen } from "@/components/GlobalLoadingScreen";
+import PageRevealWrapper from "@/components/PageRevealWrapper";
+import { LoadingProvider } from "@/contexts/LoadingContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +42,7 @@ export const metadata: Metadata = {
     "Web Development Pondicherry"
   ],
   authors: [{ name: "AGZUS Technology Solutions" }],
+
 };
 
 export default function RootLayout({
@@ -48,13 +53,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white text-black select-none">
-        {/* Custom cursor, loading intro, & moving 3D background */}
-        <CustomCursor />
-        <LoadingScreen />
-        <Moving3DBackground />
+      <body className="min-h-full flex flex-col text-slate-900 select-none">
+        <LoadingProvider>
+          {/* Custom cursor, loading intro, & moving 3D background */}
+          <CustomCursor />
+          <LoadingScreen />
+          <GlobalLoadingScreen />
+          <Moving3DBackground />
+          <OptimizedPageTransition />
 
         {/* Global floating Navbar */}
         <Navbar />
@@ -62,11 +71,14 @@ export default function RootLayout({
         {/* Floating Sidebar Navigation (appears on scroll) */}
         <FloatingSidebar />
 
-        {/* Core page routing view */}
-        <main className="flex-grow pt-24 relative z-10">{children}</main>
+          {/* Core page routing view with smooth reveal */}
+          <main className="flex-grow pt-24 relative z-10">
+            <PageRevealWrapper>{children}</PageRevealWrapper>
+          </main>
 
-        {/* Global corporate Footer */}
-        <Footer />
+          {/* Global corporate Footer */}
+          <Footer />
+        </LoadingProvider>
       </body>
     </html>
   );

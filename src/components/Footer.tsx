@@ -8,13 +8,38 @@ import { useState } from "react";
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    setSubscribed(true);
-    setEmail("");
-    setTimeout(() => setSubscribed(false), 3000);
+    
+    setLoading(true);
+    setError("");
+
+    try {
+      // Send confirmation email to subscriber
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          email: email,
+          type: "newsletter_subscription"
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to subscribe");
+
+      setSubscribed(true);
+      setEmail("");
+      setTimeout(() => setSubscribed(false), 3000);
+    } catch (err) {
+      setError("Subscription failed. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -128,32 +153,38 @@ export default function Footer() {
           {/* Newsletter Subscribe */}
           <div>
             <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-black mb-6">
-              Newsletter
+              Services Discussion
             </h3>
             <p className="text-sm text-zinc-500 mb-4 leading-relaxed">
-              Subscribe to get the latest tech insights and enterprise reviews.
+              If you want our service and discuss with us, send your Gmail.
             </p>
             <form onSubmit={handleSubmit} className="flex gap-2">
               <input
                 type="email"
-                placeholder="enterprise@domain.com"
+                placeholder="your-email@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 text-sm bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-black transition-colors"
+                disabled={loading}
+                className="w-full px-3 py-2 text-sm bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-black transition-colors disabled:opacity-50"
                 required
                 suppressHydrationWarning
               />
               <button
                 type="submit"
-                className="px-3.5 py-2 bg-black text-white rounded-xl hover:bg-zinc-800 transition-colors flex items-center justify-center shrink-0"
-                suppressHydrationWarning
+                disabled={loading}
+                className="px-3.5 py-2 bg-black text-white rounded-xl hover:bg-zinc-800 transition-colors flex items-center justify-center shrink-0 disabled:opacity-50"
               >
-                {subscribed ? "Done" : <Send className="w-4 h-4" />}
+                {subscribed ? "Done" : loading ? "..." : <Send className="w-4 h-4" />}
               </button>
             </form>
             {subscribed && (
               <p className="text-xs text-emerald-600 mt-2 font-semibold">
-                Successfully subscribed!
+                ✓ We received your email! We'll contact you soon.
+              </p>
+            )}
+            {error && (
+              <p className="text-xs text-red-600 mt-2 font-semibold">
+                {error}
               </p>
             )}
           </div>

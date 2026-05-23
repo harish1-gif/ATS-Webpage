@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Briefcase, MapPin, DollarSign, Send, FileText, CheckCircle2 } from "lucide-react";
+import gsap from "gsap";
+import { Briefcase, MapPin, DollarSign, Send, FileText, CheckCircle2, X } from "lucide-react";
+import PageTransition from "@/components/PageTransition";
 
 const openPositions = [
   {
@@ -33,6 +35,9 @@ const openPositions = [
 
 export default function Careers() {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [showUpcoming, setShowUpcoming] = useState(true);
+  const positionsRef = useRef<HTMLDivElement>(null);
+  const modalCardRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -40,6 +45,25 @@ export default function Careers() {
     coverLetter: "",
   });
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (showUpcoming && modalCardRef.current) {
+      gsap.fromTo(
+        modalCardRef.current,
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power2.out" }
+      );
+
+      gsap.to(modalCardRef.current, {
+        y: -8,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 0.6,
+      });
+    }
+  }, [showUpcoming]);
 
   const activeJobDetails = openPositions.find((job) => job.id === selectedJob);
 
@@ -54,6 +78,7 @@ export default function Careers() {
   };
 
   return (
+    <PageTransition variant="careers">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -107,7 +132,7 @@ export default function Careers() {
       </section>
 
       {/* Open Positions List */}
-      <section className="mx-auto max-w-7xl px-6 py-12 lg:px-8 flex flex-col gap-8">
+      <section className="mx-auto max-w-7xl px-6 py-12 lg:px-8 flex flex-col gap-8" ref={positionsRef}>
         <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight text-center sm:text-left">
           Available Positions ({openPositions.length})
         </h2>
@@ -148,6 +173,47 @@ export default function Careers() {
           ))}
         </div>
       </section>
+
+      {/* Upcoming Opportunities Modal */}
+      <AnimatePresence>
+        {showUpcoming && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-start justify-center pt-28 px-4" onClick={() => setShowUpcoming(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="glass-card bg-white p-8 rounded-3xl max-w-lg w-full relative shadow-2xl flex flex-col gap-6"
+              ref={modalCardRef}
+              onClick={(e) => e.stopPropagation()}
+            >
+
+              <div className="flex flex-col gap-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-violet/10 border border-brand-violet/20 w-fit">
+                  <span className="text-[10px] font-bold tracking-widest text-brand-violet uppercase">
+                    Exciting Updates
+                  </span>
+                </div>
+                <h3 className="text-2xl font-black text-slate-800 tracking-tight">
+                  More Opportunities<span className="text-brand-blue"> Coming Soon</span>
+                </h3>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                  We're actively expanding our engineering team across AI/ML, DevOps, and full-stack development. Whether you're an expert in transformers and production LLMs, cloud infrastructure maestro, or visionary product engineer—keep an eye out for fresh openings. The cognitive era is growing, and we're building a world-class team to lead it.
+                </p>
+
+                <p className="text-xs text-slate-500 font-semibold flex items-start gap-2">
+                  <span className="text-lg">💡</span>
+                  <span>In the meantime, we welcome unsolicited applications and referrals from talented engineers in your network.</span>
+                </p>
+              </div>
+
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Application Form Modal */}
       <AnimatePresence>
@@ -248,5 +314,6 @@ export default function Careers() {
         )}
       </AnimatePresence>
     </div>
+    </PageTransition>
   );
 }

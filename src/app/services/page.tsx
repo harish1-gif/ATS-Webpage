@@ -12,37 +12,12 @@ import {
   Sparkles
 } from "lucide-react";
 import Link from "next/link";
+import PageTransition from "@/components/PageTransition";
 
 const services = [
   {
-    id: "ai",
-    title: "Cognitive AI Engineering",
-    tagline: "LLMs, Custom Agents, & ML Pipelines",
-    description: "We deploy custom generative AI solutions, training pipelines, retrieval-augmented generation (RAG) datasets, and low-latency API models optimized for secure workloads.",
-    icon: Cpu,
-    capabilities: [
-      "Custom Large Language Model (LLM) fine-tuning",
-      "Retrieval-Augmented Generation (RAG) vector embeddings",
-      "Cognitive process automation & agentic workflows",
-      "Edge device neural network deployment"
-    ],
-  },
-  {
-    id: "cloud",
-    title: "Cloud Fabric Modernization",
-    tagline: "Kubernetes, Serverless, & Multi-Region DBs",
-    description: "Scale on robust multi-region infrastructure. We build containerized architectures with auto-scaling capabilities, zero-downtime rolling deploys, and cold-recovery architectures.",
-    icon: Layers,
-    capabilities: [
-      "Multi-tenant Kubernetes (EKS, GKE, AKS) clusters",
-      "Serverless functions & edge-compute networks",
-      "High-availability PostgreSQL & Supabase migrations",
-      "Infrastructure-as-Code (Terraform, Pulumi)"
-    ],
-  },
-  {
-    id: "web",
     title: "Next-Gen Web Platforms",
+    id: "web",
     tagline: "React, Next.js, & Hyper-Fast APIs",
     description: "We develop ultra-fast, premium corporate applications using Next.js and Vite. Combined with Golang or Node microservices, we ensure 100% responsiveness and premium SEO indexing.",
     icon: Globe,
@@ -66,10 +41,50 @@ const services = [
       "SOC2 / GDPR compliance engineering"
     ],
   },
+  {
+    id: "cloud",
+    title: "Cloud Fabric Modernization",
+    tagline: "Kubernetes, Serverless, & Multi-Region DBs",
+    description: "Scale on robust multi-region infrastructure. We build containerized architectures with auto-scaling capabilities, zero-downtime rolling deploys, and cold-recovery architectures.",
+    icon: Layers,
+    capabilities: [
+      "Multi-tenant Kubernetes (EKS, GKE, AKS) clusters",
+      "Serverless functions & edge-compute networks",
+      "High-availability PostgreSQL & Supabase migrations",
+      "Infrastructure-as-Code (Terraform, Pulumi)"
+    ],
+  },
+  {
+    id: "ai",
+    title: "Cognitive AI Engineering",
+    tagline: "LLMs, Custom Agents, & ML Pipelines",
+    description: "We deploy custom generative AI solutions, training pipelines, retrieval-augmented generation (RAG) datasets, and low-latency API models optimized for secure workloads.",
+    icon: Cpu,
+    capabilities: [
+      "Custom Large Language Model (LLM) fine-tuning",
+      "Retrieval-Augmented Generation (RAG) vector embeddings",
+      "Cognitive process automation & agentic workflows",
+      "Edge device neural network deployment"
+    ],
+  },
+  {
+    id: "custom-app",
+    title: "Custom App Development",
+    tagline: "Business Solutions & Enterprise Applications",
+    description: "We build tailored applications specifically designed for your business needs. From mobile to desktop, web to cross-platform solutions, we deliver scalable, secure, and user-friendly applications that drive operational efficiency.",
+    icon: Terminal,
+    capabilities: [
+      "Full-stack web application development",
+      "Native mobile app development (iOS & Android)",
+      "Cross-platform desktop applications",
+      "Enterprise software integration & migration"
+    ],
+  },
 ];
 
 export default function Services() {
   return (
+    <PageTransition variant="services">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -201,5 +216,6 @@ export default function Services() {
         </div>
       </section>
     </div>
+    </PageTransition>
   );
 }
