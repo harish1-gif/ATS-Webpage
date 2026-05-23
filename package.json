@@ -16,10 +16,12 @@
     "gsap": "^3.15.0",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",
+    "nodemailer": "^8.0.7",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-parallax-tilt": "^1.7.328",
-    "three": "^0.184.0"
+    "three": "^0.184.0",
+    "twilio": "^6.0.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

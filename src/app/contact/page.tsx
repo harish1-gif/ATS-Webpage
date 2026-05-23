@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Send, HelpCircle, CheckCircle2 } from "lucide-reac
 import ScrollReveal from "@/components/ScrollReveal";
 import OptimizedAnimatedButton from "@/components/OptimizedAnimatedButton";
 import OptimizedAnimatedBackground from "@/components/OptimizedAnimatedBackground";
+import PageTransition from "@/components/PageTransition";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -17,23 +18,38 @@ export default function Contact() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    // Simulate database write
+    
+    try {
+      // Send notification to WhatsApp and Gmail
+      await fetch("/api/notify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+
+    // Reset form after 2.5 seconds
     setTimeout(() => {
       setSubmitted(false);
       setFormData({
         name: "",
         email: "",
         company: "",
-        service: "AI Automation",
+        service: "Website Development",
         message: "",
       });
     }, 2500);
   };
 
   return (
+    <PageTransition variant="contact">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Animated background effects */}
       <OptimizedAnimatedBackground withParticles withGrid intensity="medium" />
@@ -358,5 +374,6 @@ export default function Contact() {
         </section>
       </ScrollReveal>
     </div>
+    </PageTransition>
   );
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import PageTransition from "@/components/PageTransition";
 import { 
   ArrowRight, 
   Cpu, 
@@ -58,6 +59,7 @@ const featuredServices = [
 
 export default function Home() {
   return (
+    <PageTransition variant="home">
     <div className="relative overflow-hidden w-full">
       <AGZUSStickyBackground />
       <ScrollTravelLogo />
@@ -353,5 +355,6 @@ export default function Home() {
         </section>
       </ScrollReveal>
     </div>
+    </PageTransition>
   );
 }

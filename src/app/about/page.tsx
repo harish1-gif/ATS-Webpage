@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Compass, Users, Milestone, Target, Heart } from "lucide-react";
 import Image from "next/image";
+import PageTransition from "@/components/PageTransition";
 
 const values = [
   {
@@ -45,6 +46,7 @@ const leaders = [
 
 export default function About() {
   return (
+    <PageTransition variant="about">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -195,5 +197,6 @@ export default function About() {
         </div>
       </section>
     </div>
+    </PageTransition>
   );
 }

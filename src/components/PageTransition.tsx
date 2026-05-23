@@ -1,237 +1,216 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { motion, Variants } from "framer-motion";
+import { ReactNode } from "react";
 
-export default function PageTransition() {
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const pathname = usePathname();
+export type PageVariant =
+  | "home"
+  | "about"
+  | "services"
+  | "portfolio"
+  | "contact"
+  | "careers"
+  | "blog"
+  | "technologies"
+  | "client"
+  | "admin";
 
-  useEffect(() => {
-    // Trigger transition effect on route change
-    setIsTransitioning(true);
-    const timer = setTimeout(() => {
-      setIsTransitioning(false);
-    }, 1500);
+const DURATION = 0.72;
+const EASE = [0.22, 1, 0.36, 1] as const; // custom spring-like cubic-bezier
 
-    return () => clearTimeout(timer);
-  }, [pathname]);
+/** Each page has its own unique entrance animation */
+const pageVariants: Record<PageVariant, Variants> = {
+  // Home — cinematic fade + subtle scale-up
+  home: {
+    initial: { opacity: 0, scale: 0.97, filter: "blur(6px)" },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      scale: 1.02,
+      filter: "blur(4px)",
+      transition: { duration: 0.35, ease: "easeIn" },
+    },
+  },
+
+  // About — slide in from the left
+  about: {
+    initial: { opacity: 0, x: -60, filter: "blur(4px)" },
+    animate: {
+      opacity: 1,
+      x: 0,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      x: 40,
+      transition: { duration: 0.32, ease: "easeIn" },
+    },
+  },
+
+  // Services — slide in from the right
+  services: {
+    initial: { opacity: 0, x: 60, filter: "blur(4px)" },
+    animate: {
+      opacity: 1,
+      x: 0,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      x: -40,
+      transition: { duration: 0.32, ease: "easeIn" },
+    },
+  },
+
+  // Portfolio — rise up from below
+  portfolio: {
+    initial: { opacity: 0, y: 70, filter: "blur(4px)" },
+    animate: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      y: -30,
+      transition: { duration: 0.32, ease: "easeIn" },
+    },
+  },
+
+  // Contact — clip-path curtain reveal (top-to-bottom wipe)
+  contact: {
+    initial: {
+      opacity: 1,
+      clipPath: "inset(0 0 100% 0)",
+      filter: "blur(2px)",
+    },
+    animate: {
+      opacity: 1,
+      clipPath: "inset(0 0 0% 0)",
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      clipPath: "inset(100% 0 0 0)",
+      transition: { duration: 0.35, ease: "easeIn" },
+    },
+  },
+
+  // Careers — zoom in from center
+  careers: {
+    initial: { opacity: 0, scale: 1.08, filter: "blur(8px)" },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.95,
+      filter: "blur(4px)",
+      transition: { duration: 0.32, ease: "easeIn" },
+    },
+  },
+
+  // Blog — diagonal drift (X + Y combined)
+  blog: {
+    initial: { opacity: 0, x: -40, y: 40, filter: "blur(4px)" },
+    animate: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      x: 30,
+      y: -30,
+      transition: { duration: 0.32, ease: "easeIn" },
+    },
+  },
+
+  // Technologies — perspective flip-in (rotateX)
+  technologies: {
+    initial: { opacity: 0, rotateX: 12, y: 40, filter: "blur(4px)" },
+    animate: {
+      opacity: 1,
+      rotateX: 0,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      rotateX: -8,
+      y: -20,
+      transition: { duration: 0.32, ease: "easeIn" },
+    },
+  },
+
+  // Client Portal — fade in with subtle scale
+  client: {
+    initial: { opacity: 0, scale: 0.99, filter: "blur(3px)" },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      scale: 1.01,
+      filter: "blur(2px)",
+      transition: { duration: 0.32, ease: "easeIn" },
+    },
+  },
+
+  // Admin Console — tech-forward slide from top
+  admin: {
+    initial: { opacity: 0, y: -50, filter: "blur(5px)" },
+    animate: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: DURATION, ease: EASE },
+    },
+    exit: {
+      opacity: 0,
+      y: 20,
+      filter: "blur(3px)",
+      transition: { duration: 0.32, ease: "easeIn" },
+    },
+  },
+};
+
+interface PageTransitionProps {
+  variant: PageVariant;
+  children: ReactNode;
+}
+
+export default function PageTransition({ variant, children }: PageTransitionProps) {
+  const variants = pageVariants[variant];
 
   return (
-    <AnimatePresence>
-      {isTransitioning && (
-        <>
-          {/* Main transition overlay */}
-          <motion.div
-            key="transition-overlay"
-            className="fixed inset-0 z-[9998] pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {/* Dark transparent overlay with tech lines */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/60 to-slate-900/80"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-            />
-
-            {/* Holographic scanning effect - vertical lines */}
-            <div className="absolute inset-0 overflow-hidden">
-              {[...Array(12)].map((_, i) => (
-                <motion.div
-                  key={`scan-line-${i}`}
-                  className="absolute w-px h-full bg-gradient-to-b from-transparent via-cyan-500/30 to-transparent"
-                  style={{ left: `${(i + 1) * 8.33}%` }}
-                  initial={{ opacity: 0, scaleY: 0 }}
-                  animate={{ opacity: [0, 1, 0], scaleY: 1 }}
-                  transition={{
-                    duration: 1.2,
-                    delay: i * 0.05,
-                    ease: "easeInOut",
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Glowing neon streaks moving sideways */}
-            <motion.div
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {[...Array(3)].map((_, i) => (
-                <motion.div
-                  key={`streak-${i}`}
-                  className="absolute h-1 bg-gradient-to-r from-transparent via-brand-violet to-transparent"
-                  style={{
-                    top: `${25 + i * 25}%`,
-                    width: "100%",
-                  }}
-                  initial={{ x: "-100%", opacity: 0 }}
-                  animate={{
-                    x: "100%",
-                    opacity: [0, 1, 0],
-                  }}
-                  transition={{
-                    duration: 1,
-                    delay: i * 0.15,
-                    ease: "easeInOut",
-                  }}
-                />
-              ))}
-            </motion.div>
-
-            {/* Animated digital particles */}
-            <div className="absolute inset-0">
-              {[...Array(30)].map((_, i) => (
-                <motion.div
-                  key={`particle-${i}`}
-                  className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                  }}
-                  initial={{
-                    opacity: 0,
-                    scale: 0,
-                  }}
-                  animate={{
-                    opacity: [0, 1, 0],
-                    scale: [0, 1, 0],
-                    y: [0, (Math.random() - 0.5) * 100],
-                  }}
-                  transition={{
-                    duration: 0.8 + Math.random() * 0.4,
-                    delay: Math.random() * 0.4,
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Center glow effect */}
-            <motion.div
-              className="absolute top-1/2 left-1/2 w-96 h-96 -translate-x-1/2 -translate-y-1/2 bg-gradient-radial from-brand-violet/40 via-transparent to-transparent rounded-full blur-3xl"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{
-                opacity: [0, 0.6, 0],
-                scale: [0.5, 1.5, 1],
-              }}
-              transition={{
-                duration: 1.2,
-                ease: "easeOut",
-              }}
-            />
-
-            {/* Blur-to-focus effect with animated energy pulse */}
-            <motion.div
-              className="absolute inset-0 backdrop-blur-sm"
-              initial={{ backdropFilter: "blur(20px)" }}
-              animate={{
-                backdropFilter: ["blur(20px)", "blur(10px)", "blur(0px)"],
-              }}
-              transition={{
-                duration: 1,
-                ease: "easeInOut",
-              }}
-            />
-
-            {/* Floating HUD elements */}
-            <div className="absolute inset-0 pointer-events-none">
-              {[...Array(4)].map((_, i) => (
-                <motion.div
-                  key={`hud-${i}`}
-                  className="absolute w-20 h-20 border border-cyan-500/30 rounded-lg"
-                  style={{
-                    top: `${20 + i * 25}%`,
-                    left: `${10 + i * 20}%`,
-                  }}
-                  initial={{ opacity: 0, rotate: -45 }}
-                  animate={{
-                    opacity: [0, 0.4, 0],
-                    rotate: [0, 45],
-                    scale: [0.8, 1.2, 0.8],
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    delay: i * 0.1,
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* 3D rotating light reflections */}
-            <motion.div
-              className="absolute inset-0 opacity-20"
-              style={{
-                background:
-                  "conic-gradient(from 0deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3))",
-              }}
-              initial={{ opacity: 0, rotate: 0 }}
-              animate={{
-                opacity: [0, 0.3, 0],
-                rotate: 360,
-              }}
-              transition={{
-                duration: 1.2,
-                ease: "linear",
-              }}
-            />
-
-            {/* Screen wipe effect - tech curtain reveal */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-slate-900 via-transparent to-transparent"
-              initial={{ x: "-100%" }}
-              animate={{
-                x: ["−100%", "100%"],
-              }}
-              transition={{
-                duration: 0.8,
-                delay: 0.2,
-                ease: "easeInOut",
-              }}
-            />
-          </motion.div>
-
-          {/* Loading animation progress indicator */}
-          <motion.div
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[9999]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="flex items-center gap-2">
-              <motion.div
-                className="flex gap-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                {[...Array(3)].map((_, i) => (
-                  <motion.div
-                    key={`loader-${i}`}
-                    className="w-2 h-2 bg-brand-violet rounded-full"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 1, 0.5],
-                    }}
-                    transition={{
-                      duration: 0.8,
-                      delay: i * 0.2,
-                      repeat: Infinity,
-                    }}
-                  />
-                ))}
-              </motion.div>
-              <span className="text-xs text-slate-400 font-mono">Loading</span>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+    <motion.div
+      key={variant}
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      style={{ transformOrigin: "center top", willChange: "transform, opacity" }}
+    >
+      {children}
+    </motion.div>
   );
 }
