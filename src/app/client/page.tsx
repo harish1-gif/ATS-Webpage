@@ -15,7 +15,6 @@ import {
   Loader
 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
-import PageTransition from "@/components/PageTransition";
 
 interface Ticket {
   id: string;
@@ -34,11 +33,14 @@ interface Asset {
   file_url: string;
 }
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-);
+// Initialize Supabase client (only if environment variables are configured)
+const supabase = 
+  process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    ? createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      )
+    : null;
 
 export default function ClientDashboard() {
   const [activeTab, setActiveTab] = useState("milestones");
@@ -61,6 +63,13 @@ export default function ClientDashboard() {
     const fetchAssets = async () => {
       try {
         setAssetsLoading(true);
+        
+        // Skip if Supabase is not configured
+        if (!supabase) {
+          setAssets([]);
+          return;
+        }
+
         const { data, error } = await supabase
           .from("shared_assets")
           .select("id, file_name, file_size, created_at, file_url")
@@ -130,7 +139,6 @@ export default function ClientDashboard() {
   };
 
   return (
-    <PageTransition variant="client">
     <div className="relative overflow-hidden w-full min-h-screen pb-20">
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.03] -z-10" />
 
@@ -385,6 +393,5 @@ export default function ClientDashboard() {
         </div>
       </div>
     </div>
-    </PageTransition>
   );
 }

@@ -13,23 +13,6 @@ export default function PageRevealWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const { pageReady } = useLoading();
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, filter: "blur(10px)" }}
-      animate={
-        pageReady
-          ? { opacity: 1, filter: "blur(0px)" }
-          : { opacity: 0, filter: "blur(10px)" }
-      }
-      transition={{
-        duration: 0.6,
-        ease: "easeOut",
-      }}
-      className="w-full"
-    >
-      {children}
-    </motion.div>
-  );
+  // Page reveal animation disabled - content shows immediately
+  return <div className="w-full">{children}</div>;
 }

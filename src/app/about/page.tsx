@@ -3,8 +3,12 @@
 import { motion } from "framer-motion";
 import { Compass, Users, Milestone, Target, Heart } from "lucide-react";
 import Image from "next/image";
+<<<<<<< HEAD
 import PageTransition from "@/components/PageTransition";
 import AnimatedTextConverge from "@/components/AnimatedTextConverge";
+=======
+import TextRoll from "@/components/TextRollEffect";
+>>>>>>> aa9dd88 (scroll animations)
 
 const values = [
   {
@@ -47,7 +51,6 @@ const leaders = [
 
 export default function About() {
   return (
-    <PageTransition variant="about">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -67,6 +70,7 @@ export default function About() {
           </span>
         </motion.div>
 
+<<<<<<< HEAD
         <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
           <AnimatedTextConverge 
             duration={0.8} 
@@ -76,6 +80,32 @@ export default function About() {
             Pioneering AI & Cloud Innovations from Pondicherry
           </AnimatedTextConverge>
         </h1>
+=======
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800"
+        >
+          <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+            Pioneering
+          </TextRoll>
+          {" "}
+          <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+            AI & Cloud
+          </TextRoll>
+          {" "}
+          <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+            Innovations
+          </TextRoll>
+          {" "}from{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet to-brand-blue">
+            <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight">
+              Pondicherry
+            </TextRoll>
+          </span>
+        </motion.h1>
+>>>>>>> aa9dd88 (scroll animations)
 
         <div className="text-base sm:text-lg text-slate-500 leading-relaxed font-medium">
           <AnimatedTextConverge duration={0.8} delay={0.3}>
@@ -219,6 +249,5 @@ export default function About() {
         </div>
       </section>
     </div>
-    </PageTransition>
   );
 }

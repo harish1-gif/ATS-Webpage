@@ -6,7 +6,7 @@ import { Mail, Phone, MapPin, Send, HelpCircle, CheckCircle2 } from "lucide-reac
 import ScrollReveal from "@/components/ScrollReveal";
 import OptimizedAnimatedButton from "@/components/OptimizedAnimatedButton";
 import OptimizedAnimatedBackground from "@/components/OptimizedAnimatedBackground";
-import PageTransition from "@/components/PageTransition";
+import TextRoll from "@/components/TextRollEffect";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -49,7 +49,6 @@ export default function Contact() {
   };
 
   return (
-    <PageTransition variant="contact">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Animated background effects */}
       <OptimizedAnimatedBackground withParticles withGrid intensity="medium" />
@@ -88,9 +87,14 @@ export default function Contact() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800"
           >
-            Connect with Our{" "}
+            <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+              Connect with Our
+            </TextRoll>
+            {" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet to-brand-blue">
-              Engineering Pod.
+              <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight">
+                Engineering Pod.
+              </TextRoll>
             </span>
           </motion.h1>
 
@@ -378,6 +382,5 @@ export default function Contact() {
         </section>
       </ScrollReveal>
     </div>
-    </PageTransition>
   );
 }

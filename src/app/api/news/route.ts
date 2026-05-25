@@ -6,6 +6,11 @@ export async function GET(request: NextRequest) {
   try {
     const category = request.nextUrl.searchParams.get("category");
     
+    // Return empty array if Supabase is not configured
+    if (!supabase) {
+      return NextResponse.json([]);
+    }
+
     let query = supabase
       .from("news")
       .select("*")
@@ -40,6 +45,14 @@ export async function POST(request: NextRequest) {
 
     const body: News = await request.json();
 
+    // Return error if Supabase is not configured
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Supabase not configured" },
+        { status: 503 }
+      );
+    }
+
     const { data, error } = await supabase
       .from("news")
       .insert([
@@ -73,6 +86,14 @@ export async function DELETE(request: NextRequest) {
     
     if (!id) {
       return NextResponse.json({ error: "ID required" }, { status: 400 });
+    }
+
+    // Return error if Supabase is not configured
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Supabase not configured" },
+        { status: 503 }
+      );
     }
 
     const { error } = await supabase

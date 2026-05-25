@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import PageTransition from "@/components/PageTransition";
 import { 
   ArrowRight, 
   Cpu, 
@@ -16,12 +15,12 @@ import {
   Award,
   Sparkles
 } from "lucide-react";
-import ScrollTravelLogo from "@/components/ScrollTravelLogo";
-import { AGZUSHeroLogo, AGZUSStickyBackground } from "@/components/AGZUSLogoGSAP";
-import OptimizedAnimatedBackground from "@/components/OptimizedAnimatedBackground";
 import ScrollReveal from "@/components/ScrollReveal";
 import OptimizedAnimated3DCard from "@/components/OptimizedAnimated3DCard";
 import OptimizedAnimatedButton from "@/components/OptimizedAnimatedButton";
+import { AGZUSHeroLogo } from "@/components/AGZUSLogoGSAP";
+import TextRoll from "@/components/TextRollEffect";
+import { ScrollEffectWrapper, ScrollEffectSection } from "@/components/ScrollEffect";
 
 const stats = [
   { id: 1, label: "AI Model Deployments", value: "250+", icon: Cpu },
@@ -59,10 +58,8 @@ const featuredServices = [
 
 export default function Home() {
   return (
-    <PageTransition variant="home">
-    <div className="relative overflow-hidden w-full">
-      <AGZUSStickyBackground />
-      <ScrollTravelLogo />
+    <ScrollEffectWrapper>
+      <div className="relative overflow-hidden w-full">
 
       {/* Hero Section */}
       <section className="relative mx-auto max-w-7xl px-6 pt-10 pb-20 md:py-28 lg:px-8 flex flex-col lg:flex-row items-center gap-12">
@@ -92,9 +89,22 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-800 leading-[1.05]"
           >
-            Powering Global Enterprises with{" "}
+            <TextRoll center className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-800">
+              Powering Global
+            </TextRoll>
+            {" "}
+            <TextRoll center className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-800">
+              Enterprises
+            </TextRoll>
+            {" "}with{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet via-purple-500 to-brand-blue">
-              Autonomous Intelligence.
+              <TextRoll center className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
+                Autonomous
+              </TextRoll>
+              {" "}
+              <TextRoll center className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
+                Intelligence.
+              </TextRoll>
             </span>
           </motion.h1>
 
@@ -354,7 +364,20 @@ export default function Home() {
           </motion.div>
         </section>
       </ScrollReveal>
+
+      {/* Scroll Effect Section - Showcase Solutions */}
+      <ScrollEffectSection
+        content={["Artificial", "Intelligence", "Cloud", "Security"]}
+        variant="v2"
+        title="Our Core Solutions"
+        subtitle="Enterprise-grade cognitive engineering"
+        height="h-[120vh]"
+        backgroundColor="bg-white"
+        textColor="text-slate-700"
+        textClassName="text-4xl font-bold uppercase tracking-tighter"
+        containerClassName="-mt-12"
+      />
     </div>
-    </PageTransition>
+    </ScrollEffectWrapper>
   );
 }

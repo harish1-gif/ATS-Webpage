@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Search, Calendar, User, ArrowRight, Cpu, Layers, Globe, X } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import PageTransition from "@/components/PageTransition";
+import TextRoll from "@/components/TextRollEffect";
 
 const blogPosts = [
   {
@@ -64,7 +64,6 @@ export default function Blog() {
   });
 
   return (
-    <PageTransition variant="blog">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -79,9 +78,14 @@ export default function Blog() {
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
-          Intellectual Assets &{" "}
+          <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+            Intellectual Assets &
+          </TextRoll>
+          {" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet to-brand-blue">
-            Tech Insights.
+            <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight">
+              Tech Insights.
+            </TextRoll>
           </span>
         </h1>
 
@@ -315,6 +319,5 @@ export default function Blog() {
         )}
       </AnimatePresence>
     </div>
-    </PageTransition>
   );
 }

@@ -12,7 +12,8 @@ import {
   Sparkles
 } from "lucide-react";
 import Link from "next/link";
-import PageTransition from "@/components/PageTransition";
+import TextRoll from "@/components/TextRollEffect";
+import { ScrollEffectWrapper, ScrollEffectSection } from "@/components/ScrollEffect";
 
 const services = [
   {
@@ -84,8 +85,8 @@ const services = [
 
 export default function Services() {
   return (
-    <PageTransition variant="services">
-    <div className="relative overflow-hidden w-full pb-20">
+    <ScrollEffectWrapper>
+      <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
       <div className="absolute top-[30%] left-[-10%] w-[500px] h-[500px] ambient-glow-blue -z-10 animate-pulse-glow" />
@@ -109,9 +110,14 @@ export default function Services() {
           transition={{ delay: 0.1 }}
           className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800"
         >
-          Engineered to Drive{" "}
+          <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+            Engineered to Drive
+          </TextRoll>
+          {" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet to-brand-blue">
-            Uncapped Growth.
+            <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight">
+              Uncapped Growth.
+            </TextRoll>
           </span>
         </motion.h1>
 
@@ -215,7 +221,20 @@ export default function Services() {
           </Link>
         </div>
       </section>
+
+      {/* Scroll Effect Section - Service Categories */}
+      <ScrollEffectSection
+        content={["Next-Gen", "Web", "Security", "Cloud", "AI"]}
+        variant="v3"
+        title="Transformative Solutions"
+        subtitle="Built for enterprise scale"
+        height="h-[120vh]"
+        backgroundColor="bg-slate-50"
+        textColor="text-slate-700"
+        textClassName="text-4xl font-bold uppercase tracking-tighter"
+        containerClassName="-mt-12"
+      />
     </div>
-    </PageTransition>
+    </ScrollEffectWrapper>
   );
 }

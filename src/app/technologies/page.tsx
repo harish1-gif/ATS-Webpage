@@ -11,7 +11,8 @@ import {
   HardDrive,
   Compass
 } from "lucide-react";
-import PageTransition from "@/components/PageTransition";
+import TextRoll from "@/components/TextRollEffect";
+import { ScrollEffectWrapper, ScrollEffectSection } from "@/components/ScrollEffect";
 
 const techCategories = [
   {
@@ -58,8 +59,8 @@ const techCategories = [
 
 export default function Technologies() {
   return (
-    <PageTransition variant="technologies">
-    <div className="relative overflow-hidden w-full pb-20">
+    <ScrollEffectWrapper>
+      <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
       <div className="absolute top-[30%] right-[-10%] w-[500px] h-[500px] ambient-glow-violet -z-10 animate-pulse-glow" />
@@ -73,9 +74,14 @@ export default function Technologies() {
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
-          Our Operational{" "}
+          <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+            Our Operational
+          </TextRoll>
+          {" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet to-brand-blue">
-            Tech Catalog.
+            <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight">
+              Tech Catalog.
+            </TextRoll>
           </span>
         </h1>
 
@@ -125,7 +131,20 @@ export default function Technologies() {
           );
         })}
       </section>
+
+      {/* Scroll Effect Section - Tech Stack Showcase */}
+      <ScrollEffectSection
+        content={["Python", "TypeScript", "Go", "PostgreSQL", "Kubernetes"]}
+        variant="v3"
+        title="Our Technology Arsenal"
+        subtitle="Enterprise-grade tools powering global scale"
+        height="h-[120vh]"
+        backgroundColor="bg-slate-50"
+        textColor="text-slate-700"
+        textClassName="text-4xl font-bold uppercase tracking-tighter"
+        containerClassName="-mt-12"
+      />
     </div>
-    </PageTransition>
+    </ScrollEffectWrapper>
   );
 }

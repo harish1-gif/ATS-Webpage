@@ -16,8 +16,11 @@ import {
   Newspaper
 } from "lucide-react";
 import { supabase, News } from "@/lib/supabase";
+<<<<<<< HEAD
 import PageTransition from "@/components/PageTransition";
 import PortalProtection from "@/components/PortalProtection";
+=======
+>>>>>>> aa9dd88 (scroll animations)
 
 interface Lead {
   id: string;
@@ -49,13 +52,10 @@ export default function AdminDashboard() {
     readTime: "5 min read",
   });
   const [loading, setLoading] = useState(false);
-  
-  // Stats definitions
   const [systemStats, setSystemStats] = useState({
-    cpu: 18,
-    memory: 42,
-    disk: 55,
-    uptime: "99.98%"
+    uptime: "99.9%",
+    cpu: 45,
+    memory: 62,
   });
 
   // Hydrate lists with mock data on load and fetch news
@@ -117,6 +117,12 @@ export default function AdminDashboard() {
 
   const fetchNews = async () => {
     try {
+      // Skip if Supabase is not configured
+      if (!supabase) {
+        setNews([]);
+        return;
+      }
+
       const { data } = await supabase.from("news").select("*").order("createdAt", { ascending: false });
       setNews(data || []);
     } catch (error) {
@@ -205,7 +211,6 @@ export default function AdminDashboard() {
   };
 
   return (
-    <PageTransition variant="admin">
     <div className="relative overflow-hidden w-full min-h-screen pb-20">
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.03] -z-10" />
       
@@ -572,6 +577,5 @@ export default function AdminDashboard() {
         </div>
       </div>
     </div>
-    </PageTransition>
   );
 }

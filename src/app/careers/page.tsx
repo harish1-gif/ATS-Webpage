@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { Briefcase, MapPin, DollarSign, Send, FileText, CheckCircle2, X } from "lucide-react";
-import PageTransition from "@/components/PageTransition";
+import TextRoll from "@/components/TextRollEffect";
 
 const openPositions = [
   {
@@ -78,7 +78,6 @@ export default function Careers() {
   };
 
   return (
-    <PageTransition variant="careers">
     <div className="relative overflow-hidden w-full pb-20">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
@@ -93,9 +92,14 @@ export default function Careers() {
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
-          Build the Cognitive Era.{" "}
+          <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+            Build the Cognitive Era.
+          </TextRoll>
+          {" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet to-brand-blue">
-            Apply Today.
+            <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight">
+              Apply Today.
+            </TextRoll>
           </span>
         </h1>
 
@@ -314,6 +318,5 @@ export default function Careers() {
         )}
       </AnimatePresence>
     </div>
-    </PageTransition>
   );
 }

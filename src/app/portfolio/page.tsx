@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+<<<<<<< HEAD
 import {
   ChevronRight,
   ChevronLeft,
@@ -19,6 +20,11 @@ import {
 } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
 import OptimizedAnimatedButton from "@/components/OptimizedAnimatedButton";
+=======
+import { ArrowUpRight, Cpu, Layers, Globe, Filter } from "lucide-react";
+import TextRoll from "@/components/TextRollEffect";
+import { ScrollEffectWrapper, ScrollEffectSection } from "@/components/ScrollEffect";
+>>>>>>> aa9dd88 (scroll animations)
 
 type Project = {
   id: number;
@@ -260,6 +266,7 @@ export default function Portfolio() {
   const prevProject = () => setActiveIndex((prev) => (prev - 1 + PROJECTS.length) % PROJECTS.length);
 
   return (
+<<<<<<< HEAD
     <PageTransition variant="portfolio">
       <div className="relative w-full h-[calc(100vh-6rem)] min-h-[600px] overflow-hidden bg-slate-950 text-white select-none">
         
@@ -316,6 +323,33 @@ export default function Portfolio() {
               </span>
             </div>
           </div>
+=======
+    <ScrollEffectWrapper>
+      <div className="relative overflow-hidden w-full pb-20">
+      {/* Background patterns */}
+      <div className="absolute inset-0 bg-futuristic-grid opacity-[0.04] -z-10" />
+      <div className="absolute top-[20%] left-[-10%] w-[400px] h-[400px] ambient-glow-violet -z-10 animate-pulse-glow" />
+
+      {/* Hero Section */}
+      <section className="mx-auto max-w-7xl px-6 pt-16 pb-12 lg:px-8 text-center max-w-3xl flex flex-col items-center gap-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-100 shadow-sm">
+          <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+            Case Studies
+          </span>
+        </div>
+
+        <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+          <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+            Our Architectural
+          </TextRoll>
+          {" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet to-brand-blue">
+            <TextRoll center className="text-4xl sm:text-5xl font-black tracking-tight">
+              Deployments.
+            </TextRoll>
+          </span>
+        </h1>
+>>>>>>> aa9dd88 (scroll animations)
 
           {/* Middle Board: Story Info Columns */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center my-auto">
@@ -530,6 +564,7 @@ export default function Portfolio() {
                       {expandedProject.sub}
                     </p>
                   </div>
+<<<<<<< HEAD
                 </div>
 
                 {/* Right Panel: Project Narratives */}
@@ -695,5 +730,28 @@ export default function Portfolio() {
 
       </div>
     </PageTransition>
+=======
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
+      </section>
+
+      {/* Scroll Effect Section - Impact Showcase */}
+      <ScrollEffectSection
+        content={["Transforming", "Industries", "Globally"]}
+        variant="v1"
+        title="Our Collective Impact"
+        subtitle="250+ successful deployments across sectors"
+        height="h-[120vh]"
+        backgroundColor="bg-white"
+        textColor="text-slate-700"
+        textClassName="text-4xl font-bold uppercase tracking-tighter"
+        containerClassName="-mt-12"
+      />
+    </div>
+    </ScrollEffectWrapper>
+>>>>>>> aa9dd88 (scroll animations)
   );
 }
