@@ -172,6 +172,7 @@ export default function Footer() {
               <button
                 type="submit"
                 disabled={loading}
+                suppressHydrationWarning
                 className="px-3.5 py-2 bg-black text-white rounded-xl hover:bg-zinc-800 transition-colors flex items-center justify-center shrink-0 disabled:opacity-50"
               >
                 {subscribed ? "Done" : loading ? "..." : <Send className="w-4 h-4" />}

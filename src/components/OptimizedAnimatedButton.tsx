@@ -52,6 +52,7 @@ export default function OptimizedAnimatedButton({
         damping: 40,
         mass: 0.5,
       }}
+      suppressHydrationWarning
       {...props}
     >
       {/* Lightweight shine effect - CSS only */}

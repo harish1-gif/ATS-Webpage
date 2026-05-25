@@ -98,6 +98,7 @@ export default function Blog() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
+              suppressHydrationWarning
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
                 selectedCategory === cat
                   ? "bg-slate-900 text-white border-slate-900 shadow-md"
@@ -117,6 +118,7 @@ export default function Blog() {
             placeholder="Search publications..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            suppressHydrationWarning
             className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs focus:outline-none focus:border-brand-violet text-slate-800 shadow-sm"
           />
         </div>

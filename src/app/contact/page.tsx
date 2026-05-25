@@ -279,6 +279,7 @@ export default function Contact() {
                           placeholder={field.placeholder}
                           value={field.value}
                           onChange={field.onChange}
+                          suppressHydrationWarning
                           whileFocus={{
                             boxShadow: "0 0 20px rgba(139, 92, 246, 0.2)",
                           }}
@@ -302,6 +303,7 @@ export default function Contact() {
                         placeholder="ramesh@nexustech.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        suppressHydrationWarning
                         whileFocus={{
                           boxShadow: "0 0 20px rgba(139, 92, 246, 0.2)",
                         }}
@@ -319,6 +321,7 @@ export default function Contact() {
                         className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet text-slate-800 transition-all duration-300"
                         value={formData.service}
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                        suppressHydrationWarning
                         whileFocus={{
                           boxShadow: "0 0 20px rgba(139, 92, 246, 0.2)",
                         }}
@@ -345,6 +348,7 @@ export default function Contact() {
                       placeholder="Provide details about your tech workloads, user counts, or project milestones."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      suppressHydrationWarning
                       whileFocus={{
                         boxShadow: "0 0 20px rgba(139, 92, 246, 0.2)",
                       }}

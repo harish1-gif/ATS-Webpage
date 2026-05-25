@@ -1,9 +1,24 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { ChevronRight, ChevronLeft, Sparkles, Zap, Code, BarChart3, Users, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ChevronRight,
+  ChevronLeft,
+  Sparkles,
+  Zap,
+  Cpu,
+  Check,
+  X,
+  ArrowRight,
+  Clock,
+  ExternalLink,
+  Layers,
+  ShieldCheck
+} from "lucide-react";
+import PageTransition from "@/components/PageTransition";
+import OptimizedAnimatedButton from "@/components/OptimizedAnimatedButton";
 
 type Project = {
   id: number;
@@ -26,7 +41,7 @@ type Project = {
 const PROJECTS: Project[] = [
   {
     id: 1,
-    index: "001",
+    index: "01",
     title: "Aura",
     sub: "Cognitive Agent",
     cat: "AI Solutions",
@@ -35,15 +50,15 @@ const PROJECTS: Project[] = [
     metric: "−74%",
     metricSub: "routing delay",
     desc: "Custom domain LLM fine-tuned on logistics ontologies with vector retrieval at 40k+ queries per day.",
-    img: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=90",
+    img: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1600&q=90",
     tech: ["LLM", "Vector DB", "Python", "FastAPI"],
-    challenge: "Optimize logistics routing with AI",
-    solution: "Built custom LLM trained on domain-specific ontologies",
-    results: ["74% reduction in routing delay", "40k+ queries/day capacity", "99.2% accuracy"],
+    challenge: "Optimize complex logistics routing and query handling with low latency and domain precision.",
+    solution: "Trained an enterprise LLM specifically on transport network ontologies, integrated with a custom high-performance vector DB running at 40k+ requests per day.",
+    results: ["74% reduction in overall routing delay", "Successfully scales over 40k+ daily queries", "Maintains 99.2% inference precision"],
   },
   {
     id: 2,
-    index: "002",
+    index: "02",
     title: "Sentinel",
     sub: "Computer Vision",
     cat: "AI Solutions",
@@ -52,15 +67,15 @@ const PROJECTS: Project[] = [
     metric: "+340%",
     metricSub: "anomaly detection",
     desc: "Real-time edge ML pipeline for 1000+ autonomous logistics robots with <150ms inference.",
-    img: "https://images.unsplash.com/photo-1677442135107-dd01e6db1ffa?w=1200&q=90",
+    img: "https://images.unsplash.com/photo-1677442135107-dd01e6db1ffa?w=1600&q=90",
     tech: ["Computer Vision", "TensorFlow", "Edge ML", "CUDA"],
-    challenge: "Real-time anomaly detection on edge devices",
-    solution: "Optimized CNN model for sub-150ms inference",
-    results: ["340% improvement in detection", "1000+ robots monitored", "<150ms latency"],
+    challenge: "Inference delay and high compute demands for automated logistics vehicles operating concurrently on high-throughput docks.",
+    solution: "Engineered a low-latency edge ML network running local CNN architectures optimized with CUDA streams, syncing metrics periodically with a central cloud hub.",
+    results: ["340% increase in real-time defect / hazard detection", "Deploys on 1000+ active automated guide vehicles", "Guarantees sub-150ms latency"],
   },
   {
     id: 3,
-    index: "003",
+    index: "03",
     title: "Helius",
     sub: "Intelligent OCR",
     cat: "AI Solutions",
@@ -69,15 +84,15 @@ const PROJECTS: Project[] = [
     metric: "99.2%",
     metricSub: "accuracy",
     desc: "Specialized CNNs for batch-scanning complex PDF tables and insurance claim files at enterprise scale.",
-    img: "https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1200&q=90",
+    img: "https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1600&q=90",
     tech: ["OCR", "CNN", "Document Processing", "AWS"],
-    challenge: "Extract data from complex PDF documents",
-    solution: "Specialized CNN trained on insurance documents",
-    results: ["99.2% extraction accuracy", "Enterprise-scale processing", "50% faster claims"],
+    challenge: "High error rates and document structure drift when parsing complex multi-page financial charts and claims manually.",
+    solution: "Created an intelligent optical recognition pipeline featuring advanced custom CNNs trained specifically on regional financial and insurance templates.",
+    results: ["Secured 99.2% character extraction accuracy", "Processes complex nested multi-column layouts at scale", "Boosts overall claims validation velocity by 50%"],
   },
   {
     id: 4,
-    index: "004",
+    index: "04",
     title: "Strata",
     sub: "Cloud Infrastructure",
     cat: "Cloud Infrastructure",
@@ -86,15 +101,15 @@ const PROJECTS: Project[] = [
     metric: "−43%",
     metricSub: "infra cost",
     desc: "Global commerce re-engineered onto serverless micro-endpoints distributed across 12 edge regions.",
-    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=90",
+    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=90",
     tech: ["Kubernetes", "Serverless", "AWS Lambda", "CloudFlare"],
-    challenge: "Reduce infrastructure costs for global platform",
-    solution: "Migrated to serverless architecture across 12 regions",
-    results: ["43% cost reduction", "12 edge regions", "99.99% uptime"],
+    challenge: "Huge computing bills and network delays on database-heavy ecommerce APIs during peak global shopping seasons.",
+    solution: "Deconstructed the server infrastructure into distributed micro-endpoints operating on regional serverless fabrics, leveraging global caching strategies.",
+    results: ["Reduces cloud billing footprints by 43%", "Edge execution speeds lowered latency globally", "Secures a certified 99.99% active runtime uptime"],
   },
   {
     id: 5,
-    index: "005",
+    index: "05",
     title: "Synergy",
     sub: "Enterprise Portal",
     cat: "Web Applications",
@@ -103,15 +118,15 @@ const PROJECTS: Project[] = [
     metric: "+115%",
     metricSub: "user growth",
     desc: "Enterprise management panel with real-time messaging, calendars, file uploads, and granular RBAC.",
-    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=90",
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&q=90",
     tech: ["React", "Next.js", "WebSocket", "PostgreSQL"],
-    challenge: "Build scalable enterprise portal",
-    solution: "Modern React with real-time WebSocket updates",
-    results: ["115% user growth", "Sub-100ms latency", "10k+ daily active users"],
+    challenge: "Fragmented systems for scheduling, cargo dispatch, and security logs leading to poor team performance.",
+    solution: "Designed a centralized enterprise operations web panel supported by real-time WebSockets and strict role-based access configurations.",
+    results: ["Achieved 115% platform engagement surge in 6 months", "Sub-100ms dashboard updates under high concurrency", "Manages 10k+ daily operational active profiles"],
   },
   {
     id: 6,
-    index: "006",
+    index: "06",
     title: "Aurora",
     sub: "Data Analytics",
     cat: "Cloud Infrastructure",
@@ -120,502 +135,565 @@ const PROJECTS: Project[] = [
     metric: "+285%",
     metricSub: "query speed",
     desc: "Petabyte-scale analytics platform with real-time streaming pipelines and ML-powered insights.",
-    img: "https://images.unsplash.com/photo-1623282033815-40b05d1c5c15?w=1200&q=90",
+    img: "https://images.unsplash.com/photo-1623282033815-40b05d1c5c15?w=1600&q=90",
     tech: ["Apache Spark", "Kafka", "BigQuery", "Tableau"],
-    challenge: "Process petabyte-scale data in real-time",
-    solution: "Built streaming pipeline with Spark + Kafka",
-    results: ["285% query speed improvement", "Petabyte-scale processing", "Real-time insights"],
+    challenge: "Processing delays and memory bottlenecks during streaming calculations over petabytes of analytical logs.",
+    solution: "Designed an optimized data lake architecture utilising Kafka clusters and streaming pipelines, allowing lightning-fast query calculations.",
+    results: ["Elevates analytics query processing speeds by 285%", "Processes petabytes of raw streaming datasets flawlessly", "Delivers continuous real-time system performance logs"],
   },
 ];
 
-const CATS = ["All", "AI Solutions", "Cloud Infrastructure", "Web Applications"];
+// Numeric ticker hook
+function DynamicCountUp({ value }: { value: string }) {
+  const [count, setCount] = useState(0);
+  const isPercent = value.includes("%");
+  const isPlus = value.startsWith("+");
+  const isMinus = value.startsWith("−") || value.startsWith("-");
+  const cleanNumber = parseFloat(value.replace(/[^0-9.]/g, "")) || 0;
 
-export default function Portfolio() {
-  const [filter, setFilter] = useState("All");
-  const [featured, setFeatured] = useState(0);
-  const [expandedId, setExpandedId] = useState<number | null>(null);
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.3]);
+  useEffect(() => {
+    let start = 0;
+    const duration = 1200; 
+    const frames = 40;
+    const stepTime = duration / frames;
+    const increment = cleanNumber / frames;
 
-  const filtered = filter === "All" ? PROJECTS : PROJECTS.filter(p => p.cat === filter);
-  const featuredProject = PROJECTS[featured];
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= cleanNumber) {
+        setCount(cleanNumber);
+        clearInterval(timer);
+      } else {
+        setCount(start);
+      }
+    }, stepTime);
 
-  const nextFeatured = () => setFeatured((prev) => (prev + 1) % PROJECTS.length);
-  const prevFeatured = () => setFeatured((prev) => (prev - 1 + PROJECTS.length) % PROJECTS.length);
+    return () => clearInterval(timer);
+  }, [cleanNumber]);
+
+  const formattedCount = Number.isInteger(cleanNumber) 
+    ? count.toFixed(0) 
+    : count.toFixed(1);
 
   return (
-    <>
-      <style>{`
-        @keyframes shimmer {
-          0% { background-position: -1000px 0; }
-          100% { background-position: 1000px 0; }
-        }
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); }
-          50% { box-shadow: 0 0 40px rgba(0, 0, 0, 0.2); }
-        }
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .glow-effect {
-          animation: glow 3s ease-in-out infinite;
-        }
-      `}</style>
+    <span>
+      {isMinus && "−"}
+      {isPlus && "+"}
+      {formattedCount}
+      {isPercent && "%"}
+    </span>
+  );
+}
 
-      {/* ============ FEATURED PROJECT SHOWCASE ============ */}
-      <motion.section
-        ref={containerRef}
-        className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white pt-24 pb-20"
-      >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute -top-40 -right-40 w-96 h-96 bg-gray-100 rounded-full blur-3xl opacity-30"
-            animate={{ y: [0, 40, 0], x: [0, 20, 0] }}
-            transition={{ duration: 10, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute -bottom-40 -left-40 w-96 h-96 bg-gray-100 rounded-full blur-3xl opacity-30"
-            animate={{ y: [0, -40, 0], x: [0, -20, 0] }}
-            transition={{ duration: 12, repeat: Infinity, delay: 1 }}
-          />
+// Fullscreen circular performance dial
+function CinematicRadialDial({ value, label }: { value: string; label: string }) {
+  const [offset, setOffset] = useState(251); // 2 * PI * 40 = 251.3
+  const cleanNumber = Math.min(Math.max(parseFloat(value.replace(/[^0-9.]/g, "")) || 0, 0), 100);
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+
+  useEffect(() => {
+    const pct = cleanNumber > 100 ? 100 : cleanNumber;
+    const targetOffset = circumference - (pct / 100) * circumference;
+    const timer = setTimeout(() => {
+      setOffset(targetOffset);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [cleanNumber, circumference]);
+
+  return (
+    <div className="flex flex-col items-center justify-center relative w-28 h-28 shrink-0">
+      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+        <circle
+          cx="50"
+          cy="50"
+          r={radius}
+          className="stroke-white/10 fill-none"
+          strokeWidth="4"
+        />
+        <motion.circle
+          cx="50"
+          cy="50"
+          r={radius}
+          className="stroke-white fill-none drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          animate={{ strokeDashoffset: offset }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          style={{ strokeDashoffset: offset }}
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+        <span className="text-lg font-black text-white leading-none">
+          {value}
+        </span>
+        <span className="text-[7.5px] uppercase font-bold tracking-widest text-white/50 max-w-[65px] leading-tight mt-1">
+          {label}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default function Portfolio() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [expandedProject, setExpandedProject] = useState<Project | null>(null);
+  const [activeStoryTab, setActiveStoryTab] = useState<"overview" | "challenge" | "specs">("overview");
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const activeProject = PROJECTS[activeIndex];
+
+  // Mouse-reactive parallax movement for background depth
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 12, 
+        y: (e.clientY / window.innerHeight - 0.5) * 12,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  const nextProject = () => setActiveIndex((prev) => (prev + 1) % PROJECTS.length);
+  const prevProject = () => setActiveIndex((prev) => (prev - 1 + PROJECTS.length) % PROJECTS.length);
+
+  return (
+    <PageTransition variant="portfolio">
+      <div className="relative w-full h-[calc(100vh-6rem)] min-h-[600px] overflow-hidden bg-slate-950 text-white select-none">
+        
+        {/* ============ PARALLAX BACKGROUND STAGE ============ */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ scale: 1.05, opacity: 0 }}
+              animate={{ scale: 1.02, opacity: 0.35 }}
+              exit={{ scale: 1, opacity: 0 }}
+              transition={{ duration: 0.9, ease: "easeInOut" }}
+              style={{
+                x: mousePos.x,
+                y: mousePos.y,
+              }}
+              className="absolute inset-0 w-full h-full"
+            >
+              <img
+                src={activeProject.img}
+                alt={activeProject.title}
+                className="w-full h-full object-cover filter blur-[2px] saturate-75"
+              />
+            </motion.div>
+          </AnimatePresence>
+          {/* Dense, moody corporate dark vignette overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/50" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent via-slate-950/50 to-slate-950" />
+          <div className="absolute inset-0 bg-futuristic-grid opacity-10" />
         </div>
 
-        {/* Content Container */}
-        <motion.div className="relative z-10 w-full max-w-7xl px-8 grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Featured Project Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            {/* Badge */}
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full"
-            >
-              <Sparkles className="w-4 h-4 text-gray-700" />
-              <span className="text-sm font-medium text-gray-700">Featured Project</span>
-            </motion.div>
+        {/* ============ OVERLAY CONTROL INTERFACE ============ */}
+        <div className="relative z-10 w-full h-full max-w-7xl mx-auto px-6 sm:px-8 flex flex-col justify-between py-12">
+          
+          {/* Top Board: Header Metadata */}
+          <div className="flex justify-between items-start pt-4">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 border border-white/10 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white">
+                <Sparkles className="w-3 h-3 text-amber-300" />
+                <span>Operational Showcase</span>
+              </div>
+              <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest pl-1 mt-1">
+                engineered for global frontier
+              </p>
+            </div>
+            
+            {/* Project Index indicator */}
+            <div className="text-right">
+              <span className="text-4xl font-black text-white/20 tracking-tight leading-none">
+                {activeProject.index}
+              </span>
+              <span className="text-xs font-bold text-white/50 block leading-none">
+                / {PROJECTS.length}
+              </span>
+            </div>
+          </div>
 
-            {/* Project Index & Category */}
-            <div className="space-y-2">
-              <motion.p
-                key={`index-${featured}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-sm font-bold uppercase tracking-widest text-gray-500"
-              >
-                {featuredProject.index} • {featuredProject.cat}
-              </motion.p>
-              <motion.h1
-                key={`title-${featured}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-6xl md:text-7xl font-bold tracking-tight text-black leading-tight"
-              >
-                {featuredProject.title}
-              </motion.h1>
-              <motion.p
-                key={`sub-${featured}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-2xl text-gray-600 font-light"
-              >
-                {featuredProject.sub}
-              </motion.p>
+          {/* Middle Board: Story Info Columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center my-auto">
+            {/* Left Column: Project Identity */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="space-y-2">
+                <motion.p
+                  key={`cat-${activeIndex}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-xs uppercase font-extrabold tracking-[0.3em] text-white/60"
+                >
+                  SYSTEM CATEGORY &bull; {activeProject.cat}
+                </motion.p>
+                
+                <AnimatePresence mode="wait">
+                  <motion.h1
+                    key={`title-${activeIndex}`}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 30 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-6xl sm:text-7xl font-black uppercase tracking-tighter leading-none"
+                  >
+                    {activeProject.title}
+                  </motion.h1>
+                </AnimatePresence>
+                
+                <motion.p
+                  key={`sub-${activeIndex}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-xl text-white/70 font-light"
+                >
+                  {activeProject.sub}
+                </motion.p>
+              </div>
+
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={`desc-${activeIndex}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="text-white/60 text-sm sm:text-base leading-relaxed max-w-xl font-medium"
+                >
+                  {activeProject.desc}
+                </motion.p>
+              </AnimatePresence>
+
+              {/* Specs & modules */}
+              <div className="flex flex-wrap gap-2 pt-2">
+                {activeProject.tech?.map((t) => (
+                  <span
+                    key={t}
+                    className="px-3 py-1 bg-white/5 border border-white/10 hover:bg-white/10 text-white/80 text-[10px] font-extrabold uppercase tracking-widest rounded-lg shadow-sm"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Description */}
-            <motion.p
-              key={`desc-${featured}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-lg text-gray-600 leading-relaxed max-w-lg"
-            >
-              {featuredProject.desc}
-            </motion.p>
-
-            {/* Key Metrics */}
-            <motion.div
-              key={`metrics-${featured}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="grid grid-cols-2 gap-6 pt-4"
-            >
-              <div className="border-l-2 border-gray-300 pl-6">
-                <p className="text-4xl font-bold text-black mb-1">{featuredProject.metric}</p>
-                <p className="text-sm text-gray-600 uppercase tracking-wider">{featuredProject.metricSub}</p>
-              </div>
-              <div className="border-l-2 border-gray-300 pl-6">
-                <p className="text-2xl font-bold text-black mb-1">{featuredProject.year}</p>
-                <p className="text-sm text-gray-600 uppercase tracking-wider">Year Completed</p>
-              </div>
-            </motion.div>
-
-            {/* Tech Stack */}
-            {featuredProject.tech && (
+            {/* Right Column: Performance Badge metrics */}
+            <div className="flex flex-col items-start lg:items-end justify-center">
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="flex flex-wrap gap-2 pt-4"
-              >
-                {featuredProject.tech.map((tech, idx) => (
-                  <motion.span
-                    key={tech}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + idx * 0.05 }}
-                    className="px-3 py-1 bg-black text-white text-xs font-semibold rounded-full"
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </motion.div>
-            )}
-
-            {/* Navigation Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="flex gap-4 pt-6"
-            >
-              <motion.button
-                onClick={prevFeatured}
-                whileHover={{ scale: 1.08, backgroundColor: "#000" }}
-                whileTap={{ scale: 0.95 }}
-                className="p-4 rounded-full bg-gray-100 hover:bg-black text-black hover:text-white transition-all duration-300"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </motion.button>
-              <motion.button
-                onClick={nextFeatured}
-                whileHover={{ scale: 1.08, backgroundColor: "#000" }}
-                whileTap={{ scale: 0.95 }}
-                className="p-4 rounded-full bg-gray-100 hover:bg-black text-black hover:text-white transition-all duration-300"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </motion.button>
-              <Link href="/contact" className="ml-auto">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  suppressHydrationWarning
-                  className="px-8 py-4 bg-black text-white rounded-full font-bold text-sm uppercase tracking-wider hover:shadow-2xl transition-all duration-300"
-                >
-                  Learn More
-                </motion.button>
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          {/* Right: Featured Image Carousel */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative h-96 lg:h-[500px]"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={featured}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
+                key={`metric-card-${activeIndex}`}
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="absolute inset-0 rounded-3xl overflow-hidden"
+                className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 max-w-xs w-full shadow-2xl relative overflow-hidden"
               >
-                <img
-                  src={featuredProject.img}
-                  alt={featuredProject.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full filter blur-2xl pointer-events-none" />
+                
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+                      <DynamicCountUp value={activeProject.metric} />
+                    </h3>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-white/50 mt-1">
+                      {activeProject.metricSub}
+                    </p>
+                  </div>
+                  <Zap className="w-5 h-5 text-white animate-pulse" />
+                </div>
+                
+                <p className="text-[10px] text-white/40 leading-relaxed font-semibold">
+                  Guaranteed operational enhancements recorded across production streams.
+                </p>
+
+                <div className="border-t border-white/10 pt-4 flex justify-between items-center text-[10px] font-bold text-white/60 uppercase">
+                  <span>STAMP YEAR</span>
+                  <span>{activeProject.year}</span>
+                </div>
               </motion.div>
-            </AnimatePresence>
-
-            {/* Project Counter */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute bottom-6 left-6 z-20 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-sm font-semibold text-black"
-            >
-              {featured + 1} / {PROJECTS.length}
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          animate={{ y: [0, 12, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-gray-500"
-        >
-          <svg className="w-5 h-5 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-          <span className="text-xs uppercase tracking-wider">Scroll to explore</span>
-        </motion.div>
-      </motion.section>
-
-      {/* ============ STATS SECTION ============ */}
-      <motion.section className="relative py-24 px-8 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
-          {[
-            { icon: BarChart3, label: "Projects Completed", value: "50+" },
-            { icon: Users, label: "Satisfied Clients", value: "30+" },
-            { icon: Zap, label: "Performance Gain", value: "285%" },
-            { icon: Clock, label: "Years Experience", value: "5+" },
-          ].map((stat, idx) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ delay: idx * 0.1 }}
-                className="text-center group"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  className="inline-block p-4 bg-gray-50 rounded-2xl mb-4 group-hover:bg-black transition-colors duration-300"
-                >
-                  <Icon className="w-8 h-8 text-black group-hover:text-white transition-colors duration-300" />
-                </motion.div>
-                <h3 className="text-4xl font-bold text-black mb-2">{stat.value}</h3>
-                <p className="text-gray-600 font-medium">{stat.label}</p>
-              </motion.div>
-            );
-          })}
-        </div>
-      </motion.section>
-
-      {/* ============ FILTER & GRID ============ */}
-      <motion.section className="relative py-24 px-8 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto">
-          {/* Filter Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center gap-3 mb-20"
-          >
-            {CATS.map((cat, idx) => (
-              <motion.button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
-                className={`px-6 py-3 rounded-full font-semibold text-sm uppercase tracking-wider transition-all duration-300 ${
-                  filter === cat
-                    ? "bg-black text-white shadow-xl"
-                    : "bg-white text-gray-700 border border-gray-300 hover:border-gray-500"
-                }`}
-              >
-                {cat}
-              </motion.button>
-            ))}
-          </motion.div>
-
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimatePresence mode="popLayout">
-              {filtered.map((project, idx) => (
-                <motion.div
-                  key={`${filter}-${project.id}`}
-                  layout
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.4, delay: idx * 0.08 }}
-                  onClick={() => setExpandedId(expandedId === project.id ? null : project.id)}
-                  className="group cursor-pointer"
-                >
-                  <motion.div
-                    whileHover={{ y: -8 }}
-                    className="relative h-96 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 hover:border-gray-400 transition-all duration-300 glow-effect"
-                  >
-                    {/* Image */}
-                    <motion.img
-                      src={project.img}
-                      alt={project.title}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-
-                    {/* Gradient Overlays */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"
-                      animate={{
-                        opacity: expandedId === project.id ? 1 : 0.6,
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-
-                    {/* Content */}
-                    <motion.div
-                      className="absolute inset-0 flex flex-col justify-between p-6 text-white"
-                      initial={false}
-                    >
-                      {/* Top Info */}
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex justify-between items-start"
-                      >
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-widest opacity-70">
-                            {project.index} • {project.cat}
-                          </p>
-                          <p className="text-xs opacity-60 mt-1">{project.year}</p>
-                        </div>
-                        <motion.div
-                          animate={{ rotate: expandedId === project.id ? 90 : 0, scale: expandedId === project.id ? 1.2 : 1 }}
-                          className="opacity-70"
-                        >
-                          <ChevronRight className="w-5 h-5" />
-                        </motion.div>
-                      </motion.div>
-
-                      {/* Bottom Info */}
-                      <motion.div>
-                        <h3 className="text-3xl font-bold mb-1 leading-tight">{project.title}</h3>
-                        <p className="text-sm opacity-90 font-medium mb-4">{project.sub}</p>
-
-                        {/* Expanded Details */}
-                        <AnimatePresence>
-                          {expandedId === project.id && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="mb-6 space-y-4"
-                            >
-                              <p className="text-sm leading-relaxed opacity-90">{project.desc}</p>
-                              {project.tech && (
-                                <div className="flex flex-wrap gap-2">
-                                  {project.tech.slice(0, 3).map((t) => (
-                                    <span key={t} className="text-xs px-2 py-1 bg-white/20 rounded-full">
-                                      {t}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
-                              <div className="grid grid-cols-2 gap-3 text-xs opacity-80 pt-2">
-                                <div>
-                                  <p className="opacity-60 uppercase mb-1">Client</p>
-                                  <p className="font-semibold">{project.client}</p>
-                                </div>
-                                <div>
-                                  <p className="opacity-60 uppercase mb-1">Result</p>
-                                  <p className="font-semibold">{project.metric}</p>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-
-                        {/* Metric Badge */}
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-bold">{project.metric}</span>
-                          <span className="text-xs opacity-70">{project.metricSub}</span>
-                        </div>
-                      </motion.div>
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            </div>
           </div>
-        </div>
-      </motion.section>
 
-      {/* ============ CTA SECTION ============ */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="relative py-40 px-8 bg-black overflow-hidden text-white text-center"
-      >
-        {/* Background Animation */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-white/5 to-transparent rounded-full"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
+          {/* Bottom Board: Deck Paginator timeline & controls */}
+          <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
+            
+            {/* Typographic Timeline pagination */}
+            <div className="flex flex-wrap gap-x-6 gap-y-2 max-w-3xl items-center">
+              {PROJECTS.map((proj, i) => (
+                <button
+                  key={proj.id}
+                  id={`paginator-timeline-btn-${proj.id}`}
+                  onClick={() => setActiveIndex(i)}
+                  className={`relative text-xs font-black uppercase tracking-widest py-1 transition-all cursor-none ${
+                    activeIndex === i ? "text-white" : "text-white/35 hover:text-white/60"
+                  }`}
+                >
+                  <span className="mr-1.5 text-[9px] opacity-50">{proj.index}</span>
+                  <span>{proj.title}</span>
+                  {activeIndex === i && (
+                    <motion.div
+                      layoutId="activeTimelineUnderline"
+                      className="absolute bottom-0 inset-x-0 h-0.5 bg-white rounded-full"
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
 
-        <div className="relative z-10 max-w-3xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-6xl md:text-7xl font-bold mb-6 leading-tight"
-          >
-            Ready to Transform
-            <br />
-            <span className="text-transparent bg-gradient-to-r from-white via-gray-400 to-white bg-clip-text">
-              Your Vision?
-            </span>
-          </motion.h2>
+            {/* Slider magnetic arrows & discover triggers */}
+            <div className="flex items-center justify-between md:justify-end gap-6">
+              <div className="flex gap-2">
+                <motion.button
+                  id="cine-prev"
+                  onClick={prevProject}
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-3 bg-white/5 border border-white/10 hover:border-white/20 text-white rounded-full shadow-lg cursor-none"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </motion.button>
+                <motion.button
+                  id="cine-next"
+                  onClick={nextProject}
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-3 bg-white/5 border border-white/10 hover:border-white/20 text-white rounded-full shadow-lg cursor-none"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </motion.button>
+              </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-lg text-gray-400 mb-12 max-w-xl mx-auto leading-relaxed"
-          >
-            Join 30+ enterprises that trust us to deliver exceptional solutions. Let's build something extraordinary together.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Link href="/contact">
               <motion.button
-                whileHover={{ scale: 1.05, backgroundColor: "#fff", color: "#000" }}
-                whileTap={{ scale: 0.95 }}
-                suppressHydrationWarning
-                className="px-10 py-4 bg-white text-black rounded-full font-bold uppercase tracking-wider transition-all duration-300 shadow-2xl"
+                id={`discover-story-btn-${activeProject.id}`}
+                onClick={() => {
+                  setExpandedProject(activeProject);
+                  setActiveStoryTab("overview");
+                }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:shadow-2xl transition-all cursor-none flex items-center gap-2"
               >
-                Start Your Project
+                DISCOVER STORY
+                <ArrowRight className="w-4 h-4 text-slate-900" />
               </motion.button>
-            </Link>
-            <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
-                whileTap={{ scale: 0.95 }}
-                suppressHydrationWarning
-                className="px-10 py-4 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-full font-bold uppercase tracking-wider transition-all duration-300"
-              >
-                Schedule Call
-              </motion.button>
-            </Link>
-          </motion.div>
+            </div>
+
+          </div>
+
         </div>
-      </motion.section>
-    </>
+
+        {/* ============ FULLSCREEN STORYTELLER DETAILED OVERLAY ============ */}
+        <AnimatePresence>
+          {expandedProject && (
+            <motion.div
+              initial={{ opacity: 0, y: "100%" }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 180 }}
+              className="fixed inset-0 z-50 overflow-y-auto bg-slate-950 flex items-center justify-center p-4 sm:p-6 text-white"
+            >
+              <div className="absolute inset-0 bg-premium-base opacity-5 pointer-events-none" />
+              <div className="absolute inset-0 bg-radial-gradient from-transparent via-slate-950 to-slate-950 pointer-events-none" />
+
+              {/* Close trigger button */}
+              <motion.button
+                id="cine-close-modal"
+                onClick={() => setExpandedProject(null)}
+                whileHover={{ rotate: 90, scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="absolute top-6 right-6 z-30 p-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-full shadow-lg cursor-none"
+              >
+                <X className="w-4 h-4" />
+              </motion.button>
+
+              {/* Content Panel Frame */}
+              <div className="relative max-w-5xl w-full flex flex-col md:flex-row bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-[36px] overflow-hidden shadow-2xl z-10 max-h-[90vh] md:max-h-none">
+                
+                {/* Left Panel: High Res Graphic */}
+                <div className="w-full md:w-[42%] h-[200px] md:h-auto relative min-h-[250px] md:min-h-none overflow-hidden border-b md:border-b-0 md:border-r border-white/10 rounded-t-[36px] md:rounded-t-none md:rounded-l-[36px]">
+                  <img
+                    src={expandedProject.img}
+                    alt={expandedProject.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
+
+                  {/* Telemetry data info stamp */}
+                  <div className="absolute bottom-8 left-8 text-white space-y-1.5">
+                    <p className="text-[9px] font-black uppercase tracking-[0.25em] text-white/70">
+                      SYSTEM PROTOCOL: {expandedProject.index}
+                    </p>
+                    <h2 className="text-4xl font-black uppercase tracking-tight">
+                      {expandedProject.title}
+                    </h2>
+                    <p className="text-xs font-semibold text-white/80">
+                      {expandedProject.sub}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right Panel: Project Narratives */}
+                <div className="flex-1 p-6 sm:p-10 flex flex-col justify-between overflow-y-auto max-h-[55vh] md:max-h-[80vh]">
+                  <div>
+                    {/* Immersive Tabs selectors */}
+                    <div className="flex border-b border-white/10 pb-3 mb-6 gap-6">
+                      {[
+                        { id: "overview", label: "OVERVIEW" },
+                        { id: "challenge", label: "CHALLENGE" },
+                        { id: "specs", label: "DEPLOYED SPECS" },
+                      ].map((tab) => (
+                        <button
+                          key={tab.id}
+                          id={`cine-tab-${tab.id}`}
+                          onClick={() => setActiveStoryTab(tab.id as any)}
+                          className={`relative text-xs font-black uppercase tracking-widest pb-1 transition-all cursor-none ${
+                            activeStoryTab === tab.id ? "text-white" : "text-white/40 hover:text-white/60"
+                          }`}
+                        >
+                          {activeStoryTab === tab.id && (
+                            <motion.div
+                              layoutId="activeStoryTabLine"
+                              className="absolute bottom-0 inset-x-0 h-0.5 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                            />
+                          )}
+                          <span>{tab.label}</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Tab contents render */}
+                    <AnimatePresence mode="wait">
+                      {activeStoryTab === "overview" && (
+                        <motion.div
+                          key="cine-overview"
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="space-y-6"
+                        >
+                          <div className="space-y-2">
+                            <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-white/50">
+                              SYSTEM OVERVIEW
+                            </h4>
+                            <p className="text-white/70 text-sm leading-relaxed font-medium">
+                              {expandedProject.desc}
+                            </p>
+                          </div>
+
+                          <div className="space-y-3">
+                            <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-white/50">
+                              DEPLOYED ACHIEVEMENTS
+                            </h4>
+                            <ul className="space-y-2.5">
+                              {expandedProject.results?.map((res, i) => (
+                                <li key={i} className="flex gap-3 text-xs text-white/70 font-semibold items-start">
+                                  <div className="p-1 bg-white/5 border border-white/10 rounded-lg text-white mt-0.5 shrink-0">
+                                    <Check className="w-3 h-3 stroke-[3]" />
+                                  </div>
+                                  <span>{res}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {activeStoryTab === "challenge" && (
+                        <motion.div
+                          key="cine-challenge"
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="space-y-6"
+                        >
+                          <div className="space-y-2">
+                            <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-rose-400">
+                              THE CORE CHALLENGE
+                            </h4>
+                            <p className="text-white/70 text-sm leading-relaxed font-medium">
+                              {expandedProject.challenge || "Optimizing legacy system bottlenecks and scaling real-time throughput safely across multi-region configurations."}
+                            </p>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">
+                              ENGINEERED SOLUTION
+                            </h4>
+                            <p className="text-white/70 text-sm leading-relaxed font-medium">
+                              {expandedProject.solution || "Decompiled architectural structures and implemented high-frequency serverless endpoints leveraging custom machine logic models."}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {activeStoryTab === "specs" && (
+                        <motion.div
+                          key="cine-specs"
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="space-y-6"
+                        >
+                          <div className="grid grid-cols-2 gap-4">
+                            {[
+                              { label: "CONTRACTED CLIENT", value: expandedProject.client },
+                              { label: "DEPLOYED FISCAL YEAR", value: expandedProject.year },
+                              { label: "SYSTEM DOMAIN", value: expandedProject.cat },
+                              { label: "CORE TELEMETRY", value: expandedProject.metricSub },
+                            ].map((spec, i) => (
+                              <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-3.5 shadow-sm">
+                                <p className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
+                                  {spec.label}
+                                </p>
+                                <p className="text-white font-extrabold text-xs mt-1">
+                                  {spec.value}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="space-y-3">
+                            <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-white/50">
+                              CORE INFRASTRUCTURE MODULES
+                            </h4>
+                            <div className="flex flex-wrap gap-2">
+                              {expandedProject.tech?.map((t) => (
+                                <span
+                                  key={t}
+                                  className="px-3 py-1 bg-white/5 border border-white/10 text-white/90 text-xs font-bold rounded-xl shadow-sm cursor-default"
+                                >
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Modal action CTA deck footer */}
+                  <div className="flex flex-wrap items-center justify-between border-t border-white/10 pt-6 mt-8 gap-4">
+                    <div className="flex items-center gap-4">
+                      <CinematicRadialDial value={expandedProject.metric} label={expandedProject.metricSub} />
+                    </div>
+
+                    <Link href="/contact" className="cursor-none" onClick={() => setExpandedProject(null)}>
+                      <OptimizedAnimatedButton variant="ghost" size="md" glowEffect className="cursor-none text-xs font-bold bg-white text-slate-900 border border-white">
+                        INITIATE DEPLOYMENT AUDIT
+                        <ArrowRight className="w-3.5 h-3.5 ml-1.5 text-slate-900" />
+                      </OptimizedAnimatedButton>
+                    </Link>
+                  </div>
+                </div>
+
+              </div>
+
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+      </div>
+    </PageTransition>
   );
 }
