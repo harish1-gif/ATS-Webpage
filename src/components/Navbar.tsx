@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight, Cpu } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -128,30 +128,10 @@ export default function Navbar() {
 
           {/* Action Portals */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link
-              href="/client"
-              className="text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-black transition-colors"
-            >
-              Client Portal
-            </Link>
-            <Link
-              href="/admin"
-              className="group relative inline-flex items-center gap-1.5 px-4 py-2 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider overflow-hidden shadow-md hover:shadow-black/15 hover:scale-[1.02] active:scale-95 transition-all duration-300"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-black to-zinc-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-              Admin Console
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
 
           {/* Mobile Toggle */}
           <div className="flex lg:hidden items-center gap-3">
-            <Link
-              href="/client"
-              className="text-[10px] font-bold uppercase tracking-wider text-zinc-600 mr-1"
-            >
-              Portal
-            </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="w-9 h-9 flex items-center justify-center rounded-xl bg-zinc-50 border border-zinc-200 text-black hover:bg-zinc-100 transition-colors"
@@ -192,21 +172,6 @@ export default function Navbar() {
               </div>
               
               <div className="w-full h-px bg-zinc-200" />
-              
-              <div className="flex flex-col gap-3">
-                <Link
-                  href="/client"
-                  className="w-full py-3 text-center border border-zinc-200 hover:bg-zinc-50 rounded-xl text-xs font-bold uppercase tracking-wider text-black transition-all"
-                >
-                  Client Portal
-                </Link>
-                <Link
-                  href="/admin"
-                  className="w-full py-3 text-center bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md transition-all"
-                >
-                  Admin Console
-                </Link>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
