@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { supabase, News } from "@/lib/supabase";
 import PageTransition from "@/components/PageTransition";
+import PortalProtection from "@/components/PortalProtection";
 
 interface Lead {
   id: string;

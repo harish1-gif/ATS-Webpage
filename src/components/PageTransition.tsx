@@ -37,18 +37,18 @@ const pageVariants: Record<PageVariant, Variants> = {
     },
   },
 
-  // About — slide in from the left
+  // About — converging words from 4 directions (left, right, top, bottom)
   about: {
-    initial: { opacity: 0, x: -60, filter: "blur(4px)" },
+    initial: { opacity: 0 },
     animate: {
       opacity: 1,
-      x: 0,
-      filter: "blur(0px)",
-      transition: { duration: DURATION, ease: EASE },
+      transition: {
+        duration: DURATION,
+        ease: EASE,
+      },
     },
     exit: {
       opacity: 0,
-      x: 40,
       transition: { duration: 0.32, ease: "easeIn" },
     },
   },

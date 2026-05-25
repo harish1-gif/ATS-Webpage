@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Compass, Users, Milestone, Target, Heart } from "lucide-react";
 import Image from "next/image";
 import PageTransition from "@/components/PageTransition";
+import AnimatedTextConverge from "@/components/AnimatedTextConverge";
 
 const values = [
   {
@@ -60,30 +61,27 @@ export default function About() {
           className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-100 shadow-sm"
         >
           <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
-            Our Enterprise Identity
+            <AnimatedTextConverge duration={0.6} delay={0}>
+              Our Enterprise Identity
+            </AnimatedTextConverge>
           </span>
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800"
-        >
-          Pioneering AI & Cloud Innovations from{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-violet to-brand-blue">
-            Pondicherry
-          </span>
-        </motion.h1>
+        <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-800">
+          <AnimatedTextConverge 
+            duration={0.8} 
+            delay={0.1}
+            highlightWords={["Pondicherry"]}
+          >
+            Pioneering AI & Cloud Innovations from Pondicherry
+          </AnimatedTextConverge>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-base sm:text-lg text-slate-500 leading-relaxed font-medium"
-        >
-          AGZUS Technology Solutions (ATS) was established to build premium digital products, bridging Silicon Valley standards with India's premier technical talent pool.
-        </motion.p>
+        <div className="text-base sm:text-lg text-slate-500 leading-relaxed font-medium">
+          <AnimatedTextConverge duration={0.8} delay={0.3}>
+            AGZUS Technology Solutions (ATS) was established to build premium digital products, bridging Silicon Valley standards with India's premier technical talent pool.
+          </AnimatedTextConverge>
+        </div>
       </section>
 
       {/* Pondicherry Office Spotlight */}
@@ -91,14 +89,20 @@ export default function About() {
         <div className="relative rounded-[32px] overflow-hidden border border-slate-100 bg-slate-50/50 p-8 md:p-12 lg:p-16 flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 flex flex-col gap-6 items-start">
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-brand-violet">
-              Regional Center of Excellence
+              <AnimatedTextConverge duration={0.6} delay={0.4}>
+                Regional Center of Excellence
+              </AnimatedTextConverge>
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
-              Located in Pondicherry, Puducherry
+              <AnimatedTextConverge duration={0.7} delay={0.5} highlightWords={["Pondicherry"]}>
+                Located in Pondicherry, Puducherry
+              </AnimatedTextConverge>
             </h2>
-            <p className="text-sm text-slate-500 leading-relaxed font-medium">
-              Nestled along the beautiful coastline of southern India, our Pondicherry headquarters houses our core engineering divisions. We draw on talent from premier institutions nearby to engineer global software.
-            </p>
+            <div className="text-sm text-slate-500 leading-relaxed font-medium">
+              <AnimatedTextConverge duration={0.8} delay={0.6}>
+                Nestled along the beautiful coastline of southern India, our Pondicherry headquarters houses our core engineering divisions. We draw on talent from premier institutions nearby to engineer global software.
+              </AnimatedTextConverge>
+            </div>
             <div className="flex gap-8 text-slate-800">
               <div>
                 <h4 className="text-2xl font-black text-brand-violet">50+</h4>
@@ -134,10 +138,14 @@ export default function About() {
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-8 flex flex-col gap-12">
         <div className="text-center max-w-xl mx-auto flex flex-col gap-3">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
-            Our Core Principles
+            <AnimatedTextConverge duration={0.7} delay={0.7}>
+              Our Core Principles
+            </AnimatedTextConverge>
           </h2>
           <p className="text-sm text-slate-500 font-medium">
-            How we write code, handle infrastructure, and communicate with partners.
+            <AnimatedTextConverge duration={0.8} delay={0.8}>
+              How we write code, handle infrastructure, and communicate with partners.
+            </AnimatedTextConverge>
           </p>
         </div>
 
@@ -151,11 +159,15 @@ export default function About() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <h3 className="text-lg font-bold text-slate-800 tracking-tight">
-                    {val.name}
+                    <AnimatedTextConverge duration={0.6} delay={0.9}>
+                      {val.name}
+                    </AnimatedTextConverge>
                   </h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">
-                    {val.description}
-                  </p>
+                  <div className="text-sm text-slate-500 leading-relaxed">
+                    <AnimatedTextConverge duration={0.7} delay={1.0}>
+                      {val.description}
+                    </AnimatedTextConverge>
+                  </div>
                 </div>
               </div>
             );
@@ -167,10 +179,14 @@ export default function About() {
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-8 flex flex-col gap-12">
         <div className="text-center max-w-xl mx-auto flex flex-col gap-3">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
-            Executive Council
+            <AnimatedTextConverge duration={0.7} delay={1.1}>
+              Executive Council
+            </AnimatedTextConverge>
           </h2>
           <p className="text-sm text-slate-500 font-medium">
-            Meet the engineers and directors shaping ATS.
+            <AnimatedTextConverge duration={0.8} delay={1.2}>
+              Meet the engineers and directors shaping ATS.
+            </AnimatedTextConverge>
           </p>
         </div>
 
@@ -183,14 +199,20 @@ export default function About() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <h3 className="text-lg font-bold text-slate-800 tracking-tight group-hover:text-brand-violet transition-colors">
-                  {leader.name}
+                  <AnimatedTextConverge duration={0.6} delay={1.3}>
+                    {leader.name}
+                  </AnimatedTextConverge>
                 </h3>
-                <p className="text-xs uppercase font-bold text-brand-blue tracking-wider">
-                  {leader.role}
-                </p>
-                <p className="text-sm text-slate-500 leading-relaxed mt-2">
-                  {leader.bio}
-                </p>
+                <div className="text-xs uppercase font-bold text-brand-blue tracking-wider">
+                  <AnimatedTextConverge duration={0.6} delay={1.4}>
+                    {leader.role}
+                  </AnimatedTextConverge>
+                </div>
+                <div className="text-sm text-slate-500 leading-relaxed mt-2">
+                  <AnimatedTextConverge duration={0.7} delay={1.5}>
+                    {leader.bio}
+                  </AnimatedTextConverge>
+                </div>
               </div>
             </div>
           ))}
